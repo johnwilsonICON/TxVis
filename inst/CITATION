@@ -1,0 +1,11 @@
+citHeader("To cite epiPlots in publications use:")
+citEntry(entry="Article",
+         title = "{TXvis}: Building and testing data for epidemiology",
+         author= personList(as.person("Simon Goring")),
+        journal = "NA",
+        year = "ND",
+        volume = "NA",
+        number = "NA",
+        pages = "NA",
+        url = "NA",
+        textVersion = "")
