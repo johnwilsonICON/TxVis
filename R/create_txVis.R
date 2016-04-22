@@ -2,6 +2,7 @@
 #'
 #' The \code{txVis} object contains encoding for patient, treatment and dates, and can have
 #' encoding for additional discrete events.  The class is used throughout the package.
+#' 
 #' @param patient Patient encoding for treatments.
 #' @param treatment Treatment encoding.
 #' @param start Start date for treatment in a format defined using \code{date_format}.
@@ -30,9 +31,6 @@
 #' @keywords utilities
 #' @export
 
-# Notes:
-# object.name - the name 
-
 create_txVis <- function(patient, 
                          treatment, 
                          start, 
@@ -56,7 +54,7 @@ create_txVis <- function(patient,
   
   treats <- treats[order(start), ]
   
-  if(is.null(ev_patient) | is.null(events)){
+  if (is.null(ev_patient) | is.null(events)) {
     events <- data.frame()
   } else {
     

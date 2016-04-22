@@ -1,3 +1,7 @@
+#' A helper function.
+#' 
+#' @export
+
 reform_nodes <- function(x, y){
 
   inp_table <- data.frame(ID = 1:nrow(x),

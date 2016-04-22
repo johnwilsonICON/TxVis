@@ -1,8 +1,8 @@
 #' @export
 
 print.txVis <- function(x, ...){
-  class(x) <- 'data.frame'
+  class(x[[1]]) <- 'data.frame'
   
-  x
+  x[[1]]
   
 }

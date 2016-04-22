@@ -1,10 +1,16 @@
-######################
-#Transition matrix
-######################
-tx_transmat <- function (txvis) {
-  seq.cols <- paste( rep("seq",txvis[[3]]) , c(1:nseq),sep="_" )
+#' Generate a transition matrix.
+#' 
+#' I'm not quite sure why we have this.
+#' 
+#' @import sunburstR
+#' @param txVis An object of class \code{txVis}.
+#' 
+#' @export
+
+tx_transmat <- function (txVis) {
+  seq.cols <- paste( rep("seq",txvis[[3]]) , c(1:nseq), sep="_" )
   treats_seq <- reform_seq(txvis[[1]])
-  tx_levels<-sort(unique(seq.cols))             #Coding decision: allow user-defined ordering of tx?      Currently alphabetical.
+  tx_levels <- sort(unique(seq.cols))             #Coding decision: allow user-defined ordering of tx?      Currently alphabetical.
   
   for (i in seq.cols) {
     treats_seq[seq.cols[i]]<-factor(treats_seq[seq.cols[i]],levels=tx_levels)
