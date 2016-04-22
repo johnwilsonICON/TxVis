@@ -1,13 +1,5 @@
-#for testing: dummy data
-#  tx=c(rep(c("A","B","C","D"),10), rep(c("A","C","B","D"),15), rep(c("A","D","C","B"),5), rep(c("D","B","A","C"),10), rep(c("D","A","B","C"),10), rep(c("D","C","B","A"),10), rep(c("C","B","A","D"),15), rep(c("C","A","B","D"),5), rep(c("B","A","D","C"),20)),
-#  start_date=as.Date(rep(c(0,50,120,220),100),origin="1960-01-01"),
-#  end_date=as.Date(rep(c(49,119,219,280),100),origin="1960-01-01"))
-
-#events<-NULL
-
-#library(plyr)
-
-######################################
+#' Another helper function
+#' @export
 
 reform_seq <- function (txvis) {
 
