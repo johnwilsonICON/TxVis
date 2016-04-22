@@ -7,11 +7,11 @@
 #' 
 #' @export
 
-tx_sunburst <- function (txVis) {
-  seq.cols <- paste0( rep("seq", txvis[[3]]) , c(1:nseq))
+tx_sunburst <- function(txVis) {
+  seq.cols <- paste0( rep("seq", txVis[[3]]) , c(1:nseq))
   seq.fun  <- paste0(seq.list, collapse = " + ")
   
-  input_agged_seq <- aggregate(data = reform_seq(txvis)[seq.cols], 
+  input_agged_seq <- aggregate(data = reform_seq(txVis)[seq.cols], 
                                paste0("pt_id ~ ", seq.fun) ,
                                FUN = length)     
 

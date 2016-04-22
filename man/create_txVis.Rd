@@ -34,12 +34,15 @@ encoding for additional discrete events.  The class is used throughout the packa
 \examples{
 \dontrun{
 
- data(treat)
+ # `treat` is bundled with the package.
+ 
  hlth_data <- create_txVis(patient   = treat$patient, 
                            treatment = treat$treatment,
                            start     = treat$start,
                            end       = treat$end,
-                           date_format = "\%m \%d, \%Y")
+                           date_format = "\%B \%d, \%Y")
+                           
+ hlth_data
 
 }
 }

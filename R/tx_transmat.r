@@ -8,8 +8,8 @@
 #' @export
 
 tx_transmat <- function (txVis) {
-  seq.cols <- paste( rep("seq",txvis[[3]]) , c(1:nseq), sep="_" )
-  treats_seq <- reform_seq(txvis[[1]])
+  seq.cols <- paste( rep("seq", txVis[[3]]) , c(1:nseq), sep="_" )
+  treats_seq <- reform_seq(txVis[[1]])
   tx_levels <- sort(unique(seq.cols))             #Coding decision: allow user-defined ordering of tx?      Currently alphabetical.
   
   for (i in seq.cols) {
