@@ -7,12 +7,12 @@
 #' 
 #' @export
 
-tx_sunburst <- function(txVis,nsequ) {
+tx_sunburst <- function(txVis,nsequ=NULL) {
   ##note: you need this:#library(devtools) 
                         #install_github("timelyportfolio/sunburstR")
-                        #library(sunburst)
+                        #library(sunburstR)
   
-    nseq<- ifelse (!is.null(nsequ), nsequ, 4)  #defaults to 4 if not entered by user
+  nseq<- ifelse (!is.null(nsequ), nsequ, 4)  #defaults to 4 if not entered by user
   seq.cols <- paste0( rep("seq_", nseq) , c(1:nseq) )
   seq.fun  <- paste0(seq.cols, collapse = " + ")
   
@@ -25,7 +25,7 @@ tx_sunburst <- function(txVis,nsequ) {
                              count = input_agged_seq[,ncol(input_agged_seq)])
   
   devtools::install_github("timelyportfolio/sunburstR", quiet=T)
-  sunburst::sunburst(sequence_burst)
+  sunburstR::sunburst(sequence_burst)
 
 }
 
