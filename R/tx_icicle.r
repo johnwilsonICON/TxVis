@@ -7,57 +7,34 @@
 #' 
 #' @export
 
-tx_icicle <- function(txVis) {
+tx_icicle <- function(txVis, nsequ=NULL) {
   
   if (!class(txVis) %in% "txVis") {
     stop('You must pass a txVis object.')
   }
   
-  # This needs to be completely re-coded :)
+  nseq<- ifelse (!is.null(nsequ), nsequ, 4)  #defaults to 4 if not entered by user
+  seq.cols <- paste0( rep("seq_", nseq) , c(1:nseq) )
+  seq.fun  <- paste0(seq.cols, collapse = " + ")
   
-  txVis[txVis$seq == 2,c("seq_1","seq_2")] <- txVis[txVis$seq == 1,c("seq_1","seq_2")]
-  txVis[txVis$seq == 3,c("seq_1","seq_2","seq_3")] <- txVis[txVis$seq == 1,c("seq_1","seq_2","seq_3")]
-  txVis[txVis$seq == 4,c("seq_1","seq_2","seq_3","seq_4")] <- txVis[txVis$seq == 1,c("seq_1","seq_2","seq_3","seq_4")]
-  txVis[txVis$seq == 1,c("seq_2","seq_3","seq_4")] <- NA
-  txVis[txVis$seq == 2,c("seq_3","seq_4")] <- NA
-  txVis[txVis$seq == 3,c("seq_4")] <- NA
+  treats<-data.frame(t(apply(reform_seq(txVis,nseq), 1, function(x) {x[is.na(x)] <- "None";(x)})),stringsAsFactors = F)
+  input_agged_seq <- aggregate(data = treats, 
+                               as.formula(paste0("pt_id ~ ", seq.fun)) ,
+                               FUN = length)     
+  input_agged_seq<-input_agged_seq[do.call(order,input_agged_seq[,seq.cols]),]
+  input_agged_seq <- input_agged_seq[rep(row.names(input_agged_seq), input_agged_seq$pt_id),]  #creates a row for each data point
+  input_agged_seq["x"]<-1:nrow(input_agged_seq)
   
+  plot_input<-melt(input_agged_seq,id=c("pt_id","x"))
+  #plot_input["y"]<-rep(1:nseq,each=nrow(input_agged_seq))
+  plot_input$variable<-as.character(plot_input$variable)  
+  colors <- colorRampPalette(c("dark blue", "white"))(length(unique(plot_input$value)))
   
-  txVis.seq1<- txVis[txVis$seq==1,]
-  txVis.seq1<- txVis.seq1[order(txVis.seq1$tx),]
-  
-  txVis.seq2<- txVis[txVis$seq==2,]
-  txVis.seq2<- txVis.seq2[order(txVis.seq1$tx,txVis.seq2$tx),]
-  
-  txVis.seq3<- txVis[txVis$seq==3,]
-  txVis.seq3<- txVis.seq3[order(txVis.seq1$tx,txVis.seq2$tx,txVis.seq3$tx),]
-  
-  txVis.seq4<- txVis[txVis$seq==4,]
-  txVis.seq4<- txVis.seq4[order(txVis.seq1$tx,txVis.seq2$tx,txVis.seq3$tx,txVis.seq4$tx),]
-  
-  txVis2<-rbind(txVis.seq1,txVis.seq2,txVis.seq3,txVis.seq4)
-  
-  
-  txVis2["x"]<-rep(1:nrow(txVis_seq),4)  #hard-coded 4
-  colors <- colorRampPalette(c("dark blue", "white"))(6)
-  
-  ggplot(txVis2, aes(x= x,y = seq, fill = tx)) + 
+  ggplot(plot_input, aes(x= x,y = variable, fill = value)) + 
     geom_tile() +
     theme_bw() +
     scale_fill_manual(values=colors)
   
-  #need to invert this one. Also handle NAs (stopped)
-  
-  
-  #now stacked (I forget what this is... some kind of stacked bar graph)
-  txVis3      <- txVis[ order(txVis$seq,txVis$tx), ]
-  txVis3["x"] <- rep(1:nrow(txVis_seq),4)
-  txVis3$seq  <- -1*txVis3$seq
-  
-  colors <- colorRampPalette(c("dark blue", "white"))(6)
-  ggplot(txVis3, aes(x= x,y = seq, fill = tx)) + 
-    geom_tile() +
-    theme_bw() +
-    scale_fill_manual(values=colors)
-  
+  #need to order treatments so that "none" is white
+  #need to suppress axis labels
 }
