@@ -1,7 +1,7 @@
 #' Another helper function
 #' @export
 
-reform_seq <- function (txVis,nsequ) {
+reform_seq <- function (txVis,nsequ=NULL) {
 
   #apply sequencing
   nseq<- ifelse (!is.null(nsequ), nsequ, 4)  #defaults to 4 if not entered by user

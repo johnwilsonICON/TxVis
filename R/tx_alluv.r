@@ -9,7 +9,7 @@
 #' @export
 
 
-tx_alluvial <- function(txVis,nsequ) {
+tx_alluvial <- function(txVis,nsequ=NULL) {
   ##note: you need this:#library(devtools) 
                         #install_github("mbojan/alluvial")
                         #library(alluvial)
