@@ -12,7 +12,11 @@ tx_icicle <- function(txVis, nsequ=NULL) {
   if (!class(txVis) %in% "txVis") {
     stop('You must pass a txVis object.')
   }
+<<<<<<< HEAD
  
+=======
+  
+>>>>>>> aaf9af2d3fe7cc0bd59c68e5675e686633a1c410
   nseq<- ifelse (!is.null(nsequ), nsequ, 4)  #defaults to 4 if not entered by user
   seq.cols <- paste0( rep("seq_", nseq) , c(1:nseq) )
   seq.fun  <- paste0(seq.cols, collapse = " + ")
