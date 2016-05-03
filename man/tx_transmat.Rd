@@ -4,7 +4,7 @@
 \alias{tx_transmat}
 \title{Generate a transition matrix.}
 \usage{
-tx_transmat(txVis)
+tx_transmat(txVis, sequA = NULL, sequB = NULL)
 }
 \arguments{
 \item{txVis}{An object of class \code{txVis}.}

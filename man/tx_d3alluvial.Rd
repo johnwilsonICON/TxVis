@@ -4,7 +4,7 @@
 \alias{tx_d3alluvial}
 \title{Generate an alluvial plot for treatment data using D3.js.}
 \usage{
-tx_d3alluvial(txVis)
+tx_d3alluvial(txVis, nsequ = NULL)
 }
 \arguments{
 \item{txVis}{An object of class \code{txVis}.}

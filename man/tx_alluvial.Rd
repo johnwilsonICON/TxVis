@@ -4,7 +4,7 @@
 \alias{tx_alluvial}
 \title{Generate an alluvial plot for treatment data.}
 \usage{
-tx_alluvial(txVis)
+tx_alluvial(txVis, nsequ = NULL)
 }
 \arguments{
 \item{txVis}{An object of class \code{txVis}.}

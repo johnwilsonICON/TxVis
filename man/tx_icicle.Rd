@@ -4,7 +4,7 @@
 \alias{tx_icicle}
 \title{Generate an icicle plot for treatment data.}
 \usage{
-tx_icicle(txVis)
+tx_icicle(txVis, nsequ = NULL)
 }
 \arguments{
 \item{txVis}{An object of class \code{txVis}.}
