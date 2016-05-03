@@ -14,7 +14,7 @@ tx_transmat <- function (txVis,sequA=NULL,sequB=NULL) {
  
   seq.cols <- c( paste("seq", seqA, sep="_") ,paste("seq", seqB, sep="_"))
   seq.fun  <- paste0(seq.cols, collapse = " + ")
-  treats_seq<-reform_seq(txVis,nseq)
+  treats_seq <- reform_seq(txVis,nseq)
   tx_levels <- unique(sort(unique(treats_seq[,seq.cols[1]],treats_seq[,seq.cols[2]])))             #Coding decision: allow user-defined ordering of tx?      Currently alphabetical.
 
   input_agged_12 <- aggregate(data = treats_seq, 

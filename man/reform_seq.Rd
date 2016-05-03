@@ -4,7 +4,7 @@
 \alias{reform_seq}
 \title{Another helper function}
 \usage{
-reform_seq(txvis)
+reform_seq(txVis, nsequ = NULL)
 }
 \description{
 Another helper function

@@ -4,7 +4,7 @@
 \alias{tx_sunburst}
 \title{Generate an sunburst plot for treatment data.}
 \usage{
-tx_sunburst(txVis)
+tx_sunburst(txVis, nsequ = NULL)
 }
 \arguments{
 \item{txVis}{An object of class \code{txVis}.}

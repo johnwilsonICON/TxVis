@@ -10,11 +10,19 @@
 
 
 tx_alluvial <- function(txVis,nsequ=NULL) {
-  ##note: you need this:#library(devtools) 
-                        #install_github("mbojan/alluvial")
-                        #library(alluvial)
   
-  nseq<- ifelse (!is.null(nsequ), nsequ, 4)  #defaults to 4 if not entered by user
+  if (!require("sunburstR",character.only = TRUE)) {
+    message("This function requires the non-CRAN package `sunburstR` installed from GitHub.")
+    user_inp <-  readline(prompt = "Do you want to install this package? (y/n)")
+    if (user_inp == "y") {
+      devtools::install_github("mbojan/alluvial")
+      require(sunburstR)
+    } else {
+      stop("You must install `sunburstR` for this function to work.")
+    }
+  }
+
+  nseq <- ifelse(!is.null(nsequ), nsequ, 4)  #defaults to 4 if not entered by user
   seq.cols <- paste0( rep("seq_", nseq) , c(1:nseq) )
   seq.fun  <- paste0(seq.cols, collapse = " + ")
   

@@ -4,7 +4,7 @@
 \alias{tx_indiv}
 \title{Generate an icicle plot for treatment data.}
 \usage{
-tx_indiv(txVis)
+tx_indiv(txVis, nsample = NULL)
 }
 \arguments{
 \item{txVis}{An object of class \code{txVis}.}
