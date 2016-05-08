@@ -117,3 +117,15 @@ reform_dates <- function(x, start = NULL, end = NULL, interval = "month", confli
   colnames(filled) <- out_dates[-length(out_dates)]
   filled
 }
+
+######
+#date-related cuts
+
+#then apply time cuts, currently hard-coding 30 day brackets
+#CODING DECISION: align all starting dates, so that time is from index date, rather than a set calendar date.
+#Could be user input
+#treats<-merge(treats,aggregate(start_date~pt_id,data=treats,function(x) min(x)),by="pt_id", all.x=T)
+#colnames(treats)[c(3,6)]<-c("start_date","index_date")
+#treats["date_brk"]<- cut(as.numeric(treats$start_date - treats$index_date)+.001,breaks=seq(from=0,to=30*10,by=30))
+#treats["dur"]<-as.numeric(treats$end_date - treats$start_date)
+#treats["days_from_index"]<-as.numeric(treats$start_date - treats$index_date)
