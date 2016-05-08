@@ -2,14 +2,44 @@
 % Please edit documentation in R/tx_transmat.r
 \name{tx_transmat}
 \alias{tx_transmat}
-\title{Generate a transition matrix.}
+\title{Generate a graphical transition matrix.}
 \usage{
-tx_transmat(txVis, sequA = NULL, sequB = NULL)
+tx_transmat(txVis, sequences = c(1, 2), nseq = NULL, ...)
 }
 \arguments{
 \item{txVis}{An object of class \code{txVis}.}
+
+\item{sequences}{A vector of length two indicating the sequences for which the corrplot will be drawn.}
+
+\item{nseq}{What is the maximum number of sequences}
+
+\item{...}{additional arguments to \code{corrplot}}
+}
+\value{
+A square matrix.
 }
 \description{
-I'm not quite sure why we have this.
+To show the rates at which one sequence passes to the next within a treatment
+regime.  The method uses the \code{corrplot} package to
+}
+\examples{
+
+# Create the txVis object:
+
+hlth_data <- create_txVis(patient   = treat$patient, 
+                          treatment = treat$treatment,
+                          start     = treat$start,
+                          end       = treat$end,
+                          date_format = "\%B \%d, \%Y")
+
+# A simple correlation plot:
+tx_transmat(hlth_data, sequences = c(1, 2))
+
+# Some cutomization:
+tx_transmat(hlth_data, 
+            sequences = c(1, 2), 
+            mar = c(2, 2, 2, 2),
+            order = "hclust")
+
 }
 

@@ -2,11 +2,16 @@
 % Please edit documentation in R/reform_seq.r
 \name{reform_seq}
 \alias{reform_seq}
-\title{Another helper function}
+\title{A helper function to turn a long table into a wide table.}
 \usage{
 reform_seq(txVis, nsequ = NULL)
 }
+\arguments{
+\item{txVis}{A \code{txVis} object.}
+
+\item{nsequ}{The maximum number of sequences to return.}
+}
 \description{
-Another helper function
+A helper function to turn a long table into a wide table.
 }
 

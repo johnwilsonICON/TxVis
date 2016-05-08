@@ -9,7 +9,7 @@
 #' @param nseq What is the maximum number of sequences
 #' @param ... additional arguments to \code{corrplot}
 #' 
-#' @returns A square matrix.
+#' @return A square matrix.
 #' 
 #' @examples
 #' 
