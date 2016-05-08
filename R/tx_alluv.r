@@ -1,9 +1,7 @@
-
 #' Generate an alluvial plot for treatment data.
 #' 
 #' Using a txVis object, plot the sequencing of treatments using an alluvial plot.
 #' 
-#' @import alluvial
 #' @param txVis An object of class \code{txVis}.
 #' 
 #' @export
