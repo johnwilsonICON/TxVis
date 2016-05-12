@@ -1,6 +1,7 @@
-# txVis
+<img src="inst/logo.png" align="left"> 
 
-<img src="inst/logo.png" style="float:left">
+# txVis - Treatment visualization
+
 An R package for the visualization of patient treatment data.  Treatment vary with time and across patients.  Visualization tools in R provide the opportunity to perform exploratory data analysis, combine or split treatment groups, or improve hypothesis generation.
 
 Clean and interactive visualizations add value to research, and the `txVis` platform, with R, provides the ability to generate reproducible analytic workflows to improve patient outcomes.
