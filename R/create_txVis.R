@@ -77,19 +77,7 @@ create_txVis <- function(patient,
 # SJG: I'm commenting this out.  Also, should we not be using only a single date?
 #      or might we expect that some events are multi-day?
 #  
-#   #second element of list
-#   #just doing this for now as a placeholder, but it will be the events data set
-# 
-#   name2 <- data.frame(pt_id = patient,
-#                    tx = treatment,
-#                    start_date = start,
-#                    end_date = end , stringsAsFactors = FALSE)
-# 
-#   class(name2) = c('data.frame')
-#  
-#  output <- list(txVis)
-#  
-#  class(output) = c('txVis', 'list')
+
 
   return(output)
 
