@@ -9,8 +9,6 @@ Clean and interactive visualizations add value to research, and the `txVis` plat
 ## Features
 
   * Developed using open source tools, for open and reproducible workflows
-  * 
-  * 
   
 ## Installation
 
