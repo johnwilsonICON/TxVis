@@ -81,7 +81,7 @@ create_txVis <- function(patient,
   # create class object
   output <- list(treats, events)
 
-  class(output) = c('txVis','list')  # as soon as i get here the output changes to two
+  class(output) = c('txVis','list') 
 
   return(output)
 
