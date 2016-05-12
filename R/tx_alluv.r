@@ -14,9 +14,9 @@ tx_alluvial <- function(txVis,nsequ=NULL) {
     user_inp <-  readline(prompt = "Do you want to install this package? (y/n)")
     if (user_inp == "y") {
       devtools::install_github("mbojan/alluvial")
-      require(sunburstR)
+      library(alluvial)
     } else {
-      stop("You must install `sunburstR` for this function to work.")
+      stop("You must install `alluvial` for this function to work.")
     }
   }
 
@@ -33,7 +33,7 @@ tx_alluvial <- function(txVis,nsequ=NULL) {
   colnames(input_agged_seq)[ncol(input_agged_seq)] <- "freq"
 
   # run alluvial plot
-  alluvial(input_agged_seq[,1:nseq], freq = input_agged_seq$freq)
+  alluvial::alluvial(input_agged_seq[,1:nseq], freq = input_agged_seq$freq)
   
 }
 
