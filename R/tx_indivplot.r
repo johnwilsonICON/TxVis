@@ -72,41 +72,25 @@ tx_indiv <- function(txVis, nsample=NULL,
     theme_bw()
 
   if (!is.null(txVis[[2]])) {
+    # We want to add points to the figure:
     
     evt <- txVis[[2]]
-    evt$event_date <- as.Date(evt$event_date,format = "%d-%b-%y")
-    evt$patient <- as.character(evt$patient)
-    evt$events <- as.character(evt$events)
+    evt$ev_date <- as.Date(evt$ev_date,format = "%d-%b-%y")
     
-    colnames(evt)[c(1, 4)] <- c("pt_id", "event") #will delete when fixed.
-    evt <- evt[evt$pt_id %in% rand.pid,]
+    if (aligned == TRUE) {
+      evt$ev_date <- evt$ev_date - min(txVis[[1]]$start_date)
+    }
+    
+    evt$ev_pt_id <- as.character(evt$ev_pt_id)
+    evt$event <- as.character(evt$event)
+    
+    evt <- evt[evt$ev_pt_id %in% rand.pid,]
     un.evt <- unique(evt$event)
     
-    evt <- merge(evt, unique(treats[ , c("pt_id", "index_date")]), 
-                 by = "pt_id", all.x = TRUE)
-    evt["evt_day"] <- as.numeric(evt$event_date - evt$index_date)
-    
-    if (nrow(evt) > 0) { evt[evt$evt_day < 0, "evt_day"] <- NA }
-
-    if (length(un.evt) == 0) { return(p) }
-  
-    if (length(un.evt) == 1) { 
-      p <- p + 
-        geom_point(data = evt[evt$event == un.evt[1],],
-                   aes(x = evt_day, y = pt_id), 
-                   shape = 1, size = 4)  #will make size a function of n.
+    p <- p + 
+      geom_point(data = evt,
+                 aes(x = ev_date, y = ev_pt_id, color = event))
     }
-    
-    if (length(un.evt) == 2) { 
-      p <- p + 
-        geom_point(data = evt[evt$event == un.evt[1],],
-                   aes(x = evt_day, y = pt_id),
-                   shape = 1, size = 4) + #will make size a function of n.
-        geom_point(data = evt[evt$event == un.evt[2],],
-                   aes(x = evt_day, y = pt_id), 
-                   shape = 2, size = 4)  #will make size a function of n.
-    }
-  }
   
   return(p)
   #currently hard-coding in 2 event types but will need to make flexible.

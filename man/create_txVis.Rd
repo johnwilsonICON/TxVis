@@ -45,10 +45,10 @@ encoding for additional discrete events.  The class is used throughout the packa
                            start          = treat$start,
                            end            = treat$end,
                            date_format    = "\%B \%d, \%Y",
-                           ev_patient     = events1$patient,
-                           events         = events1$event,
-                           event_date     = events1$start,
-                           event_end_date = events1$end)
+                           ev_patient     = events$pat_id,
+                           events         = events$event,
+                           event_date     = events$start,
+                           event_end_date = events$end)
                            
  hlth_data
 
