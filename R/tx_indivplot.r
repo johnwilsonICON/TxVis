@@ -4,14 +4,40 @@
 #' 
 #' @import ggplot2
 #' @param txVis An object of class \code{txVis}.
-#' @param nsample The number of patients to show sequence data for.
+#' @param nsample The number of patients to show sequence data for.  Default is 10.
+#' @param aligned Should treatment sequences be displayed by date, or from a common origin.  Default is FALSE.
+#' @param clustered Organize treatments so that similar treatments are adjacent to one another.  Not implemented.
+#' @param events Should individual events be superimposed onto the treatment sequences. Defaults to FALSE.
 #' 
+#' @return Returns a `ggplot2` object.
+#' 
+#' @examples
+#'
+#'  hlth_data <- create_txVis(patient        = treat$pat_id, 
+#'                            treatment      = treat$treatment,
+#'                            start          = treat$start,
+#'                            end            = treat$end,
+#'                            date_format    = "%B %d, %Y",
+#'                            ev_patient     = events$pat_id,
+#'                            events         = events$event,
+#'                            event_date     = events$start,
+#'                            event_end_date = events$end)
+#'                            
+#'  # Plot without events:                          
+#'  tx_indiv(hlth_data)
+#'  
+#'  # Plot with event data:
+#'  tx_indiv(hlth_data, events = TRUE)
+#'  
+#'  #  Add additional ggplot2 styline:
+#'  tx_indiv(hlth_data) + theme_bw()
 #' 
 #' @export
 
 tx_indiv <- function(txVis, nsample=NULL, 
                      aligned = FALSE,
-                     clustered = FALSE) {
+                     clustered = FALSE,
+                     events = FALSE) {
   
   nsamp <- ifelse(!is.null(nsample), 
                   nsample, 
@@ -64,15 +90,14 @@ tx_indiv <- function(txVis, nsample=NULL,
   
   # Event processing:
   
-  colors <- colorRampPalette(c("dark blue", "white"))(length(unique(tx_long_all$tx)))
+  #colors <- colorRampPalette(c("dark blue", "white"))(length(unique(tx_long_all$tx)))
   
   p <- ggplot(tx_long_all) + 
-    geom_tile(aes(x = dates, y = pt_id, fill = tx)) +
-    scale_fill_manual(values = colors) + 
-    theme_bw()
+    geom_tile(aes(x = dates, y = pt_id, fill = tx))
 
-  if (!is.null(txVis[[2]])) {
+  if (!is.null(txVis[[2]]) & events == TRUE) {
     # We want to add points to the figure:
+    # If events is missing, even if the 
     
     evt <- txVis[[2]]
     evt$ev_date <- as.Date(evt$ev_date,format = "%d-%b-%y")
@@ -93,5 +118,5 @@ tx_indiv <- function(txVis, nsample=NULL,
     }
   
   return(p)
-  #currently hard-coding in 2 event types but will need to make flexible.
+  
 }

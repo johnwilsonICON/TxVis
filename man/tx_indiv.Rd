@@ -4,14 +4,46 @@
 \alias{tx_indiv}
 \title{Generate an icicle plot for treatment data.}
 \usage{
-tx_indiv(txVis, nsample = NULL, aligned = FALSE, clustered = FALSE)
+tx_indiv(txVis, nsample = NULL, aligned = FALSE, clustered = FALSE,
+  events = FALSE)
 }
 \arguments{
 \item{txVis}{An object of class \code{txVis}.}
 
-\item{nsample}{The number of patients to show sequence data for.}
+\item{nsample}{The number of patients to show sequence data for.  Default is 10.}
+
+\item{aligned}{Should treatment sequences be displayed by date, or from a common origin.  Default is FALSE.}
+
+\item{clustered}{Organize treatments so that similar treatments are adjacent to one another.  Not implemented.}
+
+\item{events}{Should individual events be superimposed onto the treatment sequences. Defaults to FALSE.}
+}
+\value{
+Returns a `ggplot2` object.
 }
 \description{
 Using a \code{txVis} object, plot the sequencing of treatments using an icicle plot.
+}
+\examples{
+
+ hlth_data <- create_txVis(patient        = treat$pat_id, 
+                           treatment      = treat$treatment,
+                           start          = treat$start,
+                           end            = treat$end,
+                           date_format    = "\%B \%d, \%Y",
+                           ev_patient     = events$pat_id,
+                           events         = events$event,
+                           event_date     = events$start,
+                           event_end_date = events$end)
+                           
+ # Plot without events:                          
+ tx_indiv(hlth_data)
+ 
+ # Plot with event data:
+ tx_indiv(hlth_data, events = TRUE)
+ 
+ #  Add additional ggplot2 styline:
+ tx_indiv(hlth_data) + theme_bw()
+
 }
 
