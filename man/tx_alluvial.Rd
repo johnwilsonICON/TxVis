@@ -8,6 +8,8 @@ tx_alluvial(txVis, nsequ = NULL)
 }
 \arguments{
 \item{txVis}{An object of class \code{txVis}.}
+
+\item{nsequ}{The maximum number of sequences to plot.}
 }
 \description{
 Using a txVis object, plot the sequencing of treatments using an alluvial plot.

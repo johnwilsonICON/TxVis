@@ -17,23 +17,23 @@
 #' @author Ellen Korol \email{ellen.korol@@iconplc.com}
 #' @return This command returns an object of class \code{txVis}.
 #'
-#' @examples \dontrun{
+#' @examples
 #'
 #'  # `treat` is bundled with the package.
 #'  
-#'  hlth_data <- create_txVis(patient        = treat$patient, 
+#'  hlth_data <- create_txVis(patient        = treat$pat_id, 
 #'                            treatment      = treat$treatment,
 #'                            start          = treat$start,
 #'                            end            = treat$end,
 #'                            date_format    = "%B %d, %Y",
-#'                            ev_patient     = events1$patient,
-#'                            events         = events1$event,
-#'                            event_date     = events1$start,
-#'                            event_end_date = events1$end)
+#'                            ev_patient     = events$pat_id,
+#'                            events         = events$event,
+#'                            event_date     = events$start,
+#'                            event_end_date = events$end)
 #'                            
 #'  hlth_data
 #'
-#' }
+#' 
 #' @references
 #' txVis Package: https://github.com/johnwilsonICON/TxVis
 #'
@@ -72,7 +72,10 @@ create_txVis <- function(patient,
     
     event_date <- as.Date(event_date, date_format) 
     
-    event_end_date <- as.Date(event_end_date, date_format)
+    event_end_date[is.na(event_end_date)] <- event_date[is.na(event_end_date)]
+    
+    # Note, this is a dangerous change.  Fix as soon as possible:
+    event_end_date <- as.Date(event_end_date, event_date)
     
     events <- data.frame(ev_pt_id    = ev_patient,
                          event       = events,

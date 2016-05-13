@@ -5,7 +5,8 @@
 \title{Create a txVis object from raw data.}
 \usage{
 create_txVis(patient, treatment, start, end, date_format, ev_patient = NULL,
-  events = NULL, event_date = NULL)
+  events = NULL, event_date = NULL, event_end_date = NULL,
+  ev_date_format = date_format)
 }
 \arguments{
 \item{patient}{Patient encoding for treatments.}
@@ -18,11 +19,15 @@ create_txVis(patient, treatment, start, end, date_format, ev_patient = NULL,
 
 \item{date_format}{Date format, as a character string.  See \code{as.Date}.}
 
+\item{ev_patient}{A patient encoding for each individual event.}
+
 \item{events}{Any point event in the treatment of each individual.}
 
-\item{event_date}{The date, formatted as \code{start} or \code{end}.}
+\item{event_date}{The date of event, formatted as \code{date_format}.}
 
-\item{ev.patient}{A patient encoding for each individual event.}
+\item{event_end_date}{The date that event finished, formatted as \code{date_format}.}
+
+\item{ev_format}{Date format for event dates, as a character string. See \code{as.Date}.}
 }
 \value{
 This command returns an object of class \code{txVis}.
@@ -32,19 +37,22 @@ The \code{txVis} object contains encoding for patient, treatment and dates, and 
 encoding for additional discrete events.  The class is used throughout the package.
 }
 \examples{
-\dontrun{
 
  # `treat` is bundled with the package.
  
- hlth_data <- create_txVis(patient   = treat$patient, 
-                           treatment = treat$treatment,
-                           start     = treat$start,
-                           end       = treat$end,
-                           date_format = "\%B \%d, \%Y")
+ hlth_data <- create_txVis(patient        = treat$pat_id, 
+                           treatment      = treat$treatment,
+                           start          = treat$start,
+                           end            = treat$end,
+                           date_format    = "\%B \%d, \%Y",
+                           ev_patient     = events$pat_id,
+                           events         = events$event,
+                           event_date     = events$start,
+                           event_end_date = events$end)
                            
  hlth_data
 
-}
+
 }
 \author{
 Ellen Korol \email{ellen.korol@iconplc.com}

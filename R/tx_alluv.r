@@ -3,14 +3,15 @@
 #' Using a txVis object, plot the sequencing of treatments using an alluvial plot.
 #' 
 #' @param txVis An object of class \code{txVis}.
+#' @param nsequ The maximum number of sequences to plot.
 #' 
 #' @export
 
 
 tx_alluvial <- function(txVis,nsequ=NULL) {
   
-  if (!require("sunburstR",character.only = TRUE)) {
-    message("This function requires the non-CRAN package `sunburstR` installed from GitHub.")
+  if (!require("alluvial",character.only = TRUE)) {
+    message("This function requires the non-CRAN package `alluvial` installed from GitHub.")
     user_inp <-  readline(prompt = "Do you want to install this package? (y/n)")
     if (user_inp == "y") {
       devtools::install_github("mbojan/alluvial")
@@ -36,4 +37,3 @@ tx_alluvial <- function(txVis,nsequ=NULL) {
   alluvial::alluvial(input_agged_seq[,1:nseq], freq = input_agged_seq$freq)
   
 }
-
