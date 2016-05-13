@@ -36,17 +36,20 @@ tx_indiv <- function(txVis, nsample=NULL,
   
   treats["dur"] <- as.numeric(treats$end_date - treats$start_date) + 1
   treats["days_from_index"] <- as.numeric(treats$start_date - treats$index_date)
-  
-  treats_ind <- treats[rep(row.names(treats), treats$dur),]  #creates a row for each data point
-  
+
   tmp <- aggregate(days_from_index~pt_id, 
                    data = treats, function(x) min(x))
-  
-  treats_ind["days"] <- 0
-  
+
   tx_long_all <- do.call(rbind, lapply(unique(treats$pt_id), 
                                         function(x) {
                                           tx <- subset(treats, pt_id == x)
+                                          
+                                          if (aligned == TRUE) { 
+                                            tx$end_date <- as.numeric(tx$end_date - min(tx$start_date))
+                                            tx$start_date <- as.numeric(tx$start_date - min(tx$start_date))
+                                          }
+                                          
+                                          
                                           tx_long <- data.frame(pt_id = x,
                                                                 dates = seq(from = min(tx$start_date), 
                                                                             to = max(tx$end_date), by = 1))
@@ -58,27 +61,8 @@ tx_indiv <- function(txVis, nsample=NULL,
                                           tx_long
                                         }))
                   
-#  for (i in 2:nrow(treats_ind)) {
-#    if (treats_ind[i,"pt_id"] == treats_ind[i - 1,"pt_id"]) {
-#      treats_ind[i,"days"] <- treats_ind[i - 1, "days"] + 1
-#    }
-#  }
   
   # Event processing:
-  evt <- events
-  evt$event_date <- as.Date(evt$event_date,format = "%d-%b-%y")
-  evt$patient <- as.character(evt$patient)
-  evt$events <- as.character(evt$events)
-
-  colnames(evt)[c(1, 4)] <- c("pt_id", "event") #will delete when fixed.
-  evt <- evt[evt$pt_id %in% rand.pid,]
-  un.evt <- unique(evt$event)
-  
-  evt <- merge(evt, unique(treats[ , c("pt_id", "index_date")]), 
-               by = "pt_id", all.x = TRUE)
-  evt["evt_day"] <- as.numeric(evt$event_date - evt$index_date)
-  
-  if (nrow(evt) > 0) { evt[evt$evt_day < 0, "evt_day"] <- NA }
   
   colors <- colorRampPalette(c("dark blue", "white"))(length(unique(tx_long_all$tx)))
   
@@ -86,24 +70,43 @@ tx_indiv <- function(txVis, nsample=NULL,
     geom_tile(aes(x = dates, y = pt_id, fill = tx)) +
     scale_fill_manual(values = colors) + 
     theme_bw()
-  
-  if (length(un.evt) == 0) { return(p) }
 
-  if (length(un.evt) == 1) { 
-    p <- p + 
-      geom_point(data = evt[evt$event == un.evt[1],],
-                 aes(x = evt_day, y = pt_id), 
-                 shape = 1, size = 4)  #will make size a function of n.
+  if (!is.null(txVis[[2]])) {
+    
+    evt <- txVis[[2]]
+    evt$event_date <- as.Date(evt$event_date,format = "%d-%b-%y")
+    evt$patient <- as.character(evt$patient)
+    evt$events <- as.character(evt$events)
+    
+    colnames(evt)[c(1, 4)] <- c("pt_id", "event") #will delete when fixed.
+    evt <- evt[evt$pt_id %in% rand.pid,]
+    un.evt <- unique(evt$event)
+    
+    evt <- merge(evt, unique(treats[ , c("pt_id", "index_date")]), 
+                 by = "pt_id", all.x = TRUE)
+    evt["evt_day"] <- as.numeric(evt$event_date - evt$index_date)
+    
+    if (nrow(evt) > 0) { evt[evt$evt_day < 0, "evt_day"] <- NA }
+
+    if (length(un.evt) == 0) { return(p) }
+  
+    if (length(un.evt) == 1) { 
+      p <- p + 
+        geom_point(data = evt[evt$event == un.evt[1],],
+                   aes(x = evt_day, y = pt_id), 
+                   shape = 1, size = 4)  #will make size a function of n.
+    }
+    
+    if (length(un.evt) == 2) { 
+      p <- p + 
+        geom_point(data = evt[evt$event == un.evt[1],],
+                   aes(x = evt_day, y = pt_id),
+                   shape = 1, size = 4) + #will make size a function of n.
+        geom_point(data = evt[evt$event == un.evt[2],],
+                   aes(x = evt_day, y = pt_id), 
+                   shape = 2, size = 4)  #will make size a function of n.
+    }
   }
-  if (length(un.evt) == 2) { 
-    p <- p + 
-      geom_point(data = evt[evt$event == un.evt[1],],
-                 aes(x = evt_day, y = pt_id),
-                 shape = 1, size = 4) + #will make size a function of n.
-      geom_point(data = evt[evt$event == un.evt[2],],
-                 aes(x = evt_day, y = pt_id), 
-                 shape = 2, size = 4)  #will make size a function of n.
-  } 
   
   return(p)
   #currently hard-coding in 2 event types but will need to make flexible.
