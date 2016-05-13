@@ -21,11 +21,15 @@
 #'
 #'  # `treat` is bundled with the package.
 #'  
-#'  hlth_data <- create_txVis(patient   = treat$patient, 
-#'                            treatment = treat$treatment,
-#'                            start     = treat$start,
-#'                            end       = treat$end,
-#'                            date_format = "%B %d, %Y")
+#'  hlth_data <- create_txVis(patient        = treat$patient, 
+#'                            treatment      = treat$treatment,
+#'                            start          = treat$start,
+#'                            end            = treat$end,
+#'                            date_format    = "%B %d, %Y",
+#'                            ev_patient     = events1$patient,
+#'                            events         = events1$event,
+#'                            event_date     = events1$start,
+#'                            event_end_date = events1$end)
 #'                            
 #'  hlth_data
 #'
@@ -81,7 +85,7 @@ create_txVis <- function(patient,
   # create class object
   output <- list(treats, events)
 
-  class(output) = c('txVis','list')  # as soon as i get here the output changes to two
+  class(output) = c('txVis','list') 
 
   return(output)
 
