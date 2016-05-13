@@ -64,8 +64,7 @@ tx_transmat <- function(txVis, sequences = c(1,2), nseq = NULL, ...) {
   cp_data <- as.matrix(input_corr[,-1])
   cp_data[is.na(cp_data)] <- 0
   
-  corrplot(cp_data, is.corr = FALSE, tl.col = 1, 
-           method = "circle", outline = T, ...)
+  corrplot::corrplot(cp_data, is.corr = FALSE, tl.col = 1, 
+                     method = "circle", outline = T, ...)
 
 }
-

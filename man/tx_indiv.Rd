@@ -4,10 +4,12 @@
 \alias{tx_indiv}
 \title{Generate an icicle plot for treatment data.}
 \usage{
-tx_indiv(txVis, nsample = NULL)
+tx_indiv(txVis, nsample = NULL, aligned = FALSE, clustered = FALSE)
 }
 \arguments{
 \item{txVis}{An object of class \code{txVis}.}
+
+\item{nsample}{The number of patients to show sequence data for.}
 }
 \description{
 Using a \code{txVis} object, plot the sequencing of treatments using an icicle plot.

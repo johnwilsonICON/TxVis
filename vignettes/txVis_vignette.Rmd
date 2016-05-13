@@ -1,58 +1,84 @@
 ---
-title: "Vignette Title"
-author: "Vignette Author"
-date: "`r Sys.Date()`"
+title: "TxVis, Visualizing Treatment Sequences"
+author: "Ben Wilson, Ellen Korol, Sarah Goring, Simon Goring"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{TxVis, Visualizing Treatment Sequences}
   %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+  \usepackage[utf8]{inputenc}
 ---
 
-Vignettes are long form documentation commonly included in packages. Because they are part of the distribution of the package, they need to be as compact as possible. The `html_vignette` output type provides a custom style sheet (and tweaks some options) to ensure that the resulting html is as small as possible. The `html_vignette` format:
+# TxVis - Data Visualization for Treament Patterns
 
-- Never uses retina figures
-- Has a smaller default figure size
-- Uses a custom CSS stylesheet instead of the default Twitter Bootstrap style
+The `TxVis` package for R is intended to provide users with the ability to generate high quality, customizable figures for both inital exploratory data analysis, and for presentation.  The package uses a `txVis` data object that is composed of both treatment sequence data and treatment related events.  The package provides `print` and `summary` methods for the `TxVis` object, and includes a number of options for plotting.
 
-## Vignette Info
+## Basic use
 
-Note the various macros within the `vignette` section of the metadata block above. These are required in order to instruct R how to build the vignette. Note that you should change the `title` field and the `\VignetteIndexEntry` to match the title of your vignette.
+The package itself comes with a data object, `treat` that provides the opportunity to test the package.  `treat` is intended to be a sample of treatment data a client might provide, and does not reflect the required data format within the package.  Data is formatted by the function `create_txVis`.  
 
-## Styles
+The plotting functions in `txVis` expect a `txVis` object, which is a `list` with two elements, a `treatment` and `event` object.  Each of these are optional, but most plotting cannot occur without treatment data.
 
-The `html_vignette` template includes a basic CSS theme. To override this theme you can specify your own CSS in the document metadata as follows:
+```{r}
 
-    output: 
-      rmarkdown::html_vignette:
-        css: mystyles.css
+library(TxVis)
 
-## Figures
+head(treat)
 
-The figure sizes have been customised so that you can easily put two images side-by-side. 
+```
+
+In the suplpied data a set of patients with unique encoding have up to 8 unique treatments.  The `treat` dates are unencoded, but represent numeric data/time objects.
+
+```{r}
+head(events)
+```
+
+For individual patients a number of `events` have also been encoded.  These events are associated with either point events, or events that occur over multiple days.  The `TxVis` package makes use of a number of other visualization packages, but internalizes the pre-processing.  To do this requires the use of a special `txVis` object.  We simplify the process of generating the object using the `create_txVis` function:
+
+```{r}
+
+# Using the existing data.  Event data is optional, but treatment data is required.
+
+hlth_data <- create_txVis(patient        = treat$pat_id, 
+                          treatment      = treat$treatment,
+                          start          = treat$start,
+                          end            = treat$end,
+                          date_format    = "%B %d, %Y",
+                          ev_patient     = events$pat_id,
+                          events         = events$event,
+                          event_date     = events$start,
+                          event_end_date = events$end)
+```
+
+With the newly created object it becomes possible to plot one of the many options in the package.  The package also provides `print` and `summary` methods to easily provide an overivew of the data structure:
+
+```{r}
+print(hlth_data)
+```
+
+shows the head and tail of the treatment data, and provides a brief summary.
+
+The `summary` method:
+
+```{r}
+summary(hlth_data)
+```
+
+provides more extensive insight into the object data.  Ultimately the `txVis` object is a `list`, assigned the class `c('txVis', 'list')`.  Each of the `events` and `treat` objects are simply `data.frame`s, and as such can be manipulated with any of `R`'s tools for manipulating data.
+
+## Creating an Alluvial plot:
+
+The alluvial plot wraps the `alluvial` function from the `alluvial` package, which is available from [GitHub](https://github.com/mbojan/alluvial).  The first time the function is run it will prompt you to download the package if you haven't already.
 
 ```{r, fig.show='hold'}
-plot(1:10)
-plot(10:1)
+# Given that data has already been loaded into `hlth_data`
+
+tx_alluvial(hlth_data)
 ```
 
-You can enable figure captions by `fig_caption: yes` in YAML:
+## Plotting sequence data by patient
 
-    output:
-      rmarkdown::html_vignette:
-        fig_caption: yes
+It may be the case that we are interested in seeing how patient data squences change over time.  Using the `ggplot2` package, we can show treatment data over time using `tx_indiv`
 
-Then you can use the chunk option `fig.cap = "Your figure caption."` in **knitr**.
-
-## More Examples
-
-You can write math expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`.
-
-```{r, echo=FALSE, results='asis'}
-knitr::kable(head(mtcars, 10))
-```
-
-Also a quote using `>`:
-
-> "He who gives up [code] safety for [code] speed deserves neither."
-([via](https://twitter.com/hadleywickham/status/504368538874703872))
+```{r}
+tx_indiv(hlth_data)
