@@ -6,6 +6,7 @@
 #' @param txVis An object of class \code{txVis}.
 #' @param nsample The number of patients to show sequence data for.
 #' 
+#' 
 #' @export
 
 tx_indiv <- function(txVis, nsample=NULL, 
@@ -43,13 +44,25 @@ tx_indiv <- function(txVis, nsample=NULL,
   
   treats_ind["days"] <- 0
   
-  do.call(rbind, lapply(1:nrow(treats)))
-  
-  for (i in 2:nrow(treats_ind)) {
-    if (treats_ind[i,"pt_id"] == treats_ind[i - 1,"pt_id"]) {
-      treats_ind[i,"days"] <- treats_ind[i - 1, "days"] + 1
-    }
-  }
+  tx_long_all <- do.call(rbind, lapply(unique(treats$pt_id), 
+                                        function(x) {
+                                          tx <- subset(treats, pt_id == x)
+                                          tx_long <- data.frame(pt_id = x,
+                                                                dates = seq(from = min(tx$start_date), 
+                                                                            to = max(tx$end_date), by = 1))
+                                          tx_long$tx <- NA
+                                          
+                                          for (i in 1:nrow(tx)) {
+                                            tx_long$tx[findInterval(tx_long$dates, tx[i,c('start_date', 'end_date')]) == 1] <- as.character(tx$tx[i])
+                                          }
+                                          tx_long
+                                        }))
+                  
+#  for (i in 2:nrow(treats_ind)) {
+#    if (treats_ind[i,"pt_id"] == treats_ind[i - 1,"pt_id"]) {
+#      treats_ind[i,"days"] <- treats_ind[i - 1, "days"] + 1
+#    }
+#  }
   
   # Event processing:
   evt <- events
@@ -67,10 +80,10 @@ tx_indiv <- function(txVis, nsample=NULL,
   
   if (nrow(evt) > 0) { evt[evt$evt_day < 0, "evt_day"] <- NA }
   
-  colors <- colorRampPalette(c("dark blue", "white"))(length(unique(treats_ind$tx)))
+  colors <- colorRampPalette(c("dark blue", "white"))(length(unique(tx_long_all$tx)))
   
-  p <- ggplot(treats_ind) + 
-    geom_tile(aes(x = days, y = pt_id, fill = tx)) +
+  p <- ggplot(tx_long_all) + 
+    geom_tile(aes(x = dates, y = pt_id, fill = tx)) +
     scale_fill_manual(values = colors) + 
     theme_bw()
   
@@ -95,5 +108,3 @@ tx_indiv <- function(txVis, nsample=NULL,
   return(p)
   #currently hard-coding in 2 event types but will need to make flexible.
 }
-
-
