@@ -44,7 +44,7 @@ encoding for additional discrete events.  The class is used throughout the packa
                            treatment      = treat$treatment,
                            start          = treat$start,
                            end            = treat$end,
-                           date_format    = "\%B \%d, \%Y",
+                           date_format    = "\%d\%B\%Y",
                            ev_patient     = events$pat_id,
                            events         = events$event,
                            event_date     = events$start,

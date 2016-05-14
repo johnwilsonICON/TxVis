@@ -25,7 +25,7 @@
 #'                            treatment      = treat$treatment,
 #'                            start          = treat$start,
 #'                            end            = treat$end,
-#'                            date_format    = "%B %d, %Y",
+#'                            date_format    = "%d%B%Y",
 #'                            ev_patient     = events$pat_id,
 #'                            events         = events$event,
 #'                            event_date     = events$start,
@@ -74,8 +74,7 @@ create_txVis <- function(patient,
     
     event_end_date[is.na(event_end_date)] <- event_date[is.na(event_end_date)]
     
-    # Note, this is a dangerous change.  Fix as soon as possible:
-    event_end_date <- as.Date(event_end_date, event_date)
+    event_end_date <- as.Date(event_end_date, date_format)
     
     events <- data.frame(ev_pt_id    = ev_patient,
                          event       = events,

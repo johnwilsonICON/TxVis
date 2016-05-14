@@ -45,6 +45,7 @@ tx_transmat <- function(txVis, sequences = c(1,2), nseq = NULL, ...) {
   treat_seq <- reform_seq(txVis, nseq)
   
   seq_cols <- colnames(treat_seq)[sequences + 1]
+  seqs     <- paste0("seq_", sequences)
   seq_fun  <- paste0(seq_cols, collapse = " + ")
   
   # Coding decision: allow user-defined ordering of tx?  Currently alphabetical.
@@ -56,7 +57,7 @@ tx_transmat <- function(txVis, sequences = c(1,2), nseq = NULL, ...) {
   
   input_agged$pt_id <- input_agged$pt_id / sum(input_agged$pt_id)
   
-  input_corr <- dcast(input_agged, seq_1 ~ seq_2, 
+  input_corr <- reshape2::dcast(input_agged, as.formula(paste0(seqs[1], '~', seqs[2])), 
                       drop = FALSE, value.var = "pt_id")
   
   rownames(input_corr) <- input_corr[,1]
