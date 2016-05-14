@@ -26,7 +26,6 @@
 #'                            
 #'  wide <- reform_dates(hlth_data)
 #' 
-#' @importFrom lubridate interval int_overlaps as.duration intersect
 #' @export
 
 reform_dates <- function(x, start = NULL, end = NULL, interval = "month", conflict = "majority"){

@@ -8,7 +8,7 @@ test_that('Are treats and events right?',
          expect_is(object = events, "data.frame")
          expect_equivalent(colnames(treat), 
                            c("pat_id", "treatment", "class", "sequence", "start", "end"))
-         expect_equivalent(colnames(event), 
+         expect_equivalent(colnames(events), 
                            c("pat_id", "event", "start", "end"))
          expect_is(events$pat_id, "character")
          expect_is(events$start, "character")
@@ -23,3 +23,4 @@ test_that('What makes it, what breaks it:',
           {
             
           })
+

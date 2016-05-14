@@ -38,12 +38,16 @@ For individual patients a number of `events` have also been encoded.  These even
 ```{r}
 
 # Using the existing data.  Event data is optional, but treatment data is required.
+# Here the date encoding for the startand end date is slightly peculiar:
+head(treat$start)
+
+# So we use the `create_txVis` flag `date_format` to ensure that the formatting is correct:
 
 hlth_data <- create_txVis(patient        = treat$pat_id, 
                           treatment      = treat$treatment,
                           start          = treat$start,
                           end            = treat$end,
-                          date_format    = "%B %d, %Y",
+                          date_format    = "%d%B%Y",
                           ev_patient     = events$pat_id,
                           events         = events$event,
                           event_date     = events$start,
@@ -84,4 +88,31 @@ It may be the case that we are interested in seeing how patient data squences ch
 tx_indiv(hlth_data, events = FALSE)
 ```
 
-Here we see that 
+Here we see that the data is plotted out, with ten patients sampled randomly from the set of patients.  We can sample more patients and add the set of events to the mapping:
+
+```{r}
+tx_indiv(hlth_data, nsample = 50, events = TRUE)
+```
+
+Or we can align the plots so that they all appear to start at time 0, and provide some extra customization:
+
+```{r}
+
+tx_indiv(hlth_data, 
+         nsample = 50, 
+         events = TRUE, 
+         align = TRUE) +
+  scale_x_continuous(expand = c(0,0)) +
+  xlab("Days Since Treatment Start") +
+  ylab("Patient") +
+  theme_bw() +
+  theme(axis.text.y = element_blank())
+
+```
+
+With each method it is possible to visualize treatment outcomes, and emphasise particular aspects of the treatment sequencing.  For example, understanding transitions from one treatment to another can be understood using `tx_transmat`, a visualization for transition matrices.  The method examines treatment sequences rather than dates or date ranges.  The sequences of interest can be passed using the `sequences` parameter.  By default the first two sequences are examined, although any two 
+
+
+```{r}
+tx_transmat(hlth_data, sequences = c(2,4))
+```

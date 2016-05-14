@@ -34,7 +34,8 @@
 #' 
 #' @export
 
-tx_indiv <- function(txVis, nsample=NULL, 
+tx_indiv <- function(txVis, 
+                     nsample=NULL, 
                      aligned = FALSE,
                      clustered = FALSE,
                      events = FALSE) {
@@ -92,8 +93,8 @@ tx_indiv <- function(txVis, nsample=NULL,
   
   #colors <- colorRampPalette(c("dark blue", "white"))(length(unique(tx_long_all$tx)))
   
-  p <- ggplot(tx_long_all) + 
-    geom_tile(aes(x = dates, y = pt_id, fill = tx))
+  p <- ggplot2::ggplot(tx_long_all) + 
+    ggplot2::geom_tile(aes(x = dates, y = pt_id, fill = tx))
 
   if (!is.null(txVis[[2]]) & events == TRUE) {
     # We want to add points to the figure:
@@ -113,8 +114,8 @@ tx_indiv <- function(txVis, nsample=NULL,
     un.evt <- unique(evt$event)
     
     p <- p + 
-      geom_point(data = evt,
-                 aes(x = ev_date, y = ev_pt_id, color = event))
+      ggplot2::geom_point(data = evt,
+                          aes(x = ev_date, y = ev_pt_id, color = event))
     }
   
   return(p)
