@@ -10,11 +10,13 @@
 #' \code{first} in which coding priority is given to the treatment that occurs first chronologically within the interval
 #' \code{last} in which coding priority is given to the treatment that occurs last chronologically within the interval
 #'
+#' @import lubridate
 #' @param x A \code{txVis} object
 #' @param start The starting period for the date matrix. Default is the earliest date in the \code{txVis} object.
 #' @param end The ending period for the date matrix. Default is the earliest date in the \code{txVis} object.
 #' @param interval The length of the interval in text format.  See Details.
 #' @param conflict Conflict resolution.
+#'
 #' 
 #' @examples
 #'
@@ -28,7 +30,7 @@
 #' 
 #' @export
 
-reform_dates <- function(x, start = NULL, end = NULL, interval = "month", conflict = "majority"){
+reform_dates <- function(x, nsequ=NULL, start = NULL, end = NULL, interval = "month", conflict = "majority"){
   
   # Basic check:
   if (!"txVis" %in% class(x)) {
@@ -114,7 +116,15 @@ reform_dates <- function(x, start = NULL, end = NULL, interval = "month", confli
   filled <- do.call(rbind.data.frame, c(treat_out, list(stringsAsFactors = FALSE)))
   rownames(filled) <- unique(x[[1]]$pt_id)
   colnames(filled) <- out_dates[-length(out_dates)]
-  filled
+  
+  nseq <- ifelse(!is.null(nsequ), nsequ, ncol(filled)) #nseq will override start and end date specifications, to only return that number of intervals.
+  
+  filled$pt_id<-rownames(filled)
+  colorder <- c("pt_id",colnames(filled[,1:(ncol(filled)-1)]))
+  filled<-filled[,colorder]
+  filled<-filled[,1:(nseq+1)]
+  colnames(filled)<- c("pt_id",paste("seq",rep(1:nseq),sep="_"))
+  return(filled)
 }
 
 ######

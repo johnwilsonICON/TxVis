@@ -8,7 +8,7 @@
 #' @export
 
 
-tx_alluvial <- function(txVis,nsequ=NULL) {
+tx_alluvial <- function(txVis,nsequ=NULL,seq.v.dat="seq",start = NULL, end = NULL, interval = "month", conflict = "majority",tx_colour=NULL,tx_cw=0.05) {
   
   if (!require("alluvial",character.only = TRUE)) {
     message("This function requires the non-CRAN package `alluvial` installed from GitHub.")
@@ -21,11 +21,16 @@ tx_alluvial <- function(txVis,nsequ=NULL) {
     }
   }
 
-  nseq <- ifelse(!is.null(nsequ), nsequ, 4)  #defaults to 4 if not entered by user
-  seq.cols <- paste0( rep("seq_", nseq) , c(1:nseq) )
+  if(seq.v.dat=="seq") {
+    txVis.ref<-data.frame(t(apply(reform_seq(txVis,nsequ), 1, function(x) {x[is.na(x)] <- "None";(x)})),stringsAsFactors = F)
+  } else {
+    txVis.ref<-data.frame(t(apply(reform_dates(txVis,nsequ,start, end, interval, conflict), 1, function(x) {x[is.na(x)] <- "None";(x)})),stringsAsFactors = F)
+  }
+  
+  seq.cols <- paste0( rep("seq_", (ncol(txVis.ref)-1)) , c(1:(ncol(txVis.ref)-1)) )
   seq.fun  <- paste0(seq.cols, collapse = " + ")
   
-  input_agged_seq <- aggregate(data = reform_seq(txVis,nseq), 
+  input_agged_seq <- aggregate(data = txVis.ref, 
                                as.formula(paste0("pt_id ~ ", seq.fun)) ,
                                FUN = length)     
   
@@ -34,6 +39,10 @@ tx_alluvial <- function(txVis,nsequ=NULL) {
   colnames(input_agged_seq)[ncol(input_agged_seq)] <- "freq"
 
   # run alluvial plot
-  alluvial::alluvial(input_agged_seq[,1:nseq], freq = input_agged_seq$freq)
+  if (is.null(tx_colour)) { 
+    alluvial::alluvial(input_agged_seq[,1:(ncol(txVis.ref)-1)], freq = input_agged_seq$freq,blocks=T,cw=0.05,col="#1f78b4",border="#1f78b4",cw=tx_cw)
+  } else { 
+    alluvial::alluvial(input_agged_seq[,1:(ncol(txVis.ref)-1)], freq = input_agged_seq$freq,col=tx_colour,border=tx_colour,cw=tx_cw)
+  }
   
 }

@@ -3,10 +3,9 @@
 #' Using a \code{txVis} object, plot the sequencing of treatments using a sunburst plot.
 #'
 #' @param txVis An object of class \code{txVis}.
-#' 
 #' @export
 
-tx_sunburst <- function(txVis,nsequ=NULL) {
+tx_sunburst <- function(txVis,nsequ=NULL,seq.v.dat="seq",start = NULL, end = NULL, interval = "month", conflict = "majority",tx_colour=NULL) {
   
   if (!require("sunburstR",character.only = TRUE)) {
     message("This function requires the non-CRAN package `sunburstR` installed from GitHub.")
@@ -19,11 +18,17 @@ tx_sunburst <- function(txVis,nsequ=NULL) {
     }
   }
   
-  nseq <- ifelse(!is.null(nsequ), nsequ, 4)  #defaults to 4 if not entered by user
-  seq.cols <- paste0( rep("seq_", nseq) , c(1:nseq) )
+
+    if(seq.v.dat=="seq") {
+      txVis.ref<-data.frame(t(apply(reform_seq(txVis,nsequ), 1, function(x) {x[is.na(x)] <- "None";(x)})),stringsAsFactors = F)
+    } else {
+      txVis.ref<-data.frame(t(apply(reform_dates(txVis,nsequ,start, end, interval, conflict), 1, function(x) {x[is.na(x)] <- "None";(x)})),stringsAsFactors = F)
+    }
+ 
+  seq.cols <- paste0( rep("seq_", (ncol(txVis.ref)-1)) , c(1:(ncol(txVis.ref)-1)) )
   seq.fun  <- paste0(seq.cols, collapse = " + ")
   
-  input_agged_seq <- aggregate(data = reform_seq(txVis,nseq), 
+  input_agged_seq <- aggregate(data = txVis.ref, 
                                as.formula(paste0("pt_id ~ ", seq.fun)) ,
                                FUN = length)     
 
@@ -33,6 +38,10 @@ tx_sunburst <- function(txVis,nsequ=NULL) {
                                                 }),
                              count = input_agged_seq[,ncol(input_agged_seq)])
   
-  sunburstR::sunburst(sequence_burst)
-
+  if (is.null(tx_colour)) { 
+    sunburstR::sunburst(sequence_burst)
+  } else { 
+    sunburstR::sunburst(sequence_burst,colors=tx_colour)
+  }
 }
+

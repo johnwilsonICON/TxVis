@@ -94,7 +94,8 @@ tx_indiv <- function(txVis,
   #colors <- colorRampPalette(c("dark blue", "white"))(length(unique(tx_long_all$tx)))
   
   p <- ggplot2::ggplot(tx_long_all) + 
-    ggplot2::geom_tile(aes(x = dates, y = pt_id, fill = tx))
+    ggplot2::geom_tile(aes(x = dates, y = pt_id, fill = tx)) +
+    labs(fill="Treatment",x=if(aligned==T) {"Days from index date"} else {"Year"},y="Patient ID")
 
   if (!is.null(txVis[[2]]) & events == TRUE) {
     # We want to add points to the figure:
