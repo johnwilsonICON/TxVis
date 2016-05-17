@@ -4,7 +4,7 @@
 #' regime.  The method uses the \code{corrplot} package to 
 #' 
 #' @importFrom corrplot corrplot
-#' @param txVis An object of class \code{txVis}.
+#' @param txvis An object of class \code{txvis}.
 #' @param sequences A vector of length two indicating the sequences for which the corrplot will be drawn.
 #' @param nseq What is the maximum number of sequences
 #' @param ... additional arguments to \code{corrplot}
@@ -13,9 +13,9 @@
 #' 
 #' @examples
 #' 
-#' # Create the txVis object:
+#' # Create the txvis object:
 #' 
-#' hlth_data <- create_txVis(patient   = treat$patient, 
+#' hlth_data <- create_txvis(patient   = treat$patient, 
 #'                           treatment = treat$treatment,
 #'                           start     = treat$start,
 #'                           end       = treat$end,
@@ -32,17 +32,17 @@
 #' 
 #' @export
 
-tx_transmat <- function(txVis, sequences = c(1,2), nseq = NULL, ...) {
+tx_transmat <- function(txvis, sequences = c(1,2), nseq = NULL, ...) {
 
-  if (!"txVis" %in% class(txVis)) {
-    stop("txVis must be of class txVis.")
+  if (!"txvis" %in% class(txvis)) {
+    stop("txvis must be of class txvis.")
   }
   
   if (!length(sequences) == 2) {
     stop("tx_transmat only displays the transition between two sequences.")
   }
   
-  treat_seq <- reform_seq(txVis, nseq)
+  treat_seq <- reform_seq(txvis, nseq)
   
   seq_cols <- colnames(treat_seq)[sequences + 1]
   seqs     <- paste0("seq_", sequences)

@@ -1,9 +1,9 @@
 #' Generate an icicle plot for treatment data.
 #' 
-#' Using a \code{txVis} object, plot the sequencing of treatments using an icicle plot.
+#' Using a \code{txvis} object, plot the sequencing of treatments using an icicle plot.
 #' 
 #' @import ggplot2
-#' @param txVis An object of class \code{txVis}.
+#' @param txvis An object of class \code{txvis}.
 #' @param nsample The number of patients to show sequence data for.  Default is 10.
 #' @param aligned Should treatment sequences be displayed by date, or from a common origin.  Default is FALSE.
 #' @param clustered Organize treatments so that similar treatments are adjacent to one another.  Not implemented.
@@ -13,7 +13,7 @@
 #' 
 #' @examples
 #'
-#'  hlth_data <- create_txVis(patient        = treat$pat_id, 
+#'  hlth_data <- create_txvis(patient        = treat$pat_id, 
 #'                            treatment      = treat$treatment,
 #'                            start          = treat$start,
 #'                            end            = treat$end,
@@ -34,7 +34,7 @@
 #' 
 #' @export
 
-tx_indiv <- function(txVis, 
+tx_indiv <- function(txvis, 
                      nsample=NULL, 
                      aligned = FALSE,
                      clustered = FALSE,
@@ -45,12 +45,12 @@ tx_indiv <- function(txVis,
                   10)  #defaults to 10 if not entered by user
   
   # If the sample size is smaller than the 
-  unique.pid <- unique(txVis[[1]]$pt_id)
+  unique.pid <- unique(txvis[[1]]$pt_id)
   rand.ind <- sample(1:length(unique.pid), nsamp)
   rand.pid <- unique.pid[rand.ind]
   
   # encode the treatments:
-  treats <- txVis[[1]]
+  treats <- txvis[[1]]
   treats <- treats[treats$pt_id %in% rand.pid,]
   
   treats <- merge(treats, aggregate(start_date~pt_id,
@@ -97,15 +97,15 @@ tx_indiv <- function(txVis,
     ggplot2::geom_tile(aes(x = dates, y = pt_id, fill = tx)) +
     labs(fill="Treatment",x=if(aligned==T) {"Days from index date"} else {"Year"},y="Patient ID")
 
-  if (!is.null(txVis[[2]]) & events == TRUE) {
+  if (!is.null(txvis[[2]]) & events == TRUE) {
     # We want to add points to the figure:
     # If events is missing, even if the 
     
-    evt <- txVis[[2]]
+    evt <- txvis[[2]]
     evt$ev_date <- as.Date(evt$ev_date,format = "%d-%b-%y")
     
     if (aligned == TRUE) {
-      evt$ev_date <- evt$ev_date - min(txVis[[1]]$start_date)
+      evt$ev_date <- evt$ev_date - min(txvis[[1]]$start_date)
     }
     
     evt$ev_pt_id <- as.character(evt$ev_pt_id)

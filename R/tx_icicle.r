@@ -1,31 +1,31 @@
 #' Generate an icicle plot for treatment data.
 #' 
-#' Using a \code{txVis} object, plot the sequencing of treatments using an icicle plot.
+#' Using a \code{txvis} object, plot the sequencing of treatments using an icicle plot.
 #' 
 #' @import ggplot2
 #' @import reshape2
-#' @param txVis An object of class \code{txVis}.
+#' @param txvis An object of class \code{txvis}.
 #' 
 #' @export
 
-tx_icicle <- function(txVis, nsequ=NULL,seq.v.dat="seq",start = NULL, end = NULL, interval = "month", conflict = "majority",tx_colour=NULL) {
+tx_icicle <- function(txvis, nsequ=NULL,seq.v.dat="seq",start = NULL, end = NULL, interval = "month", conflict = "majority",tx_colour=NULL) {
   
-  if (!class(txVis) %in% "txVis") {
-    stop('You must pass a txVis object.')
+  if (!class(txvis) %in% "txvis") {
+    stop('You must pass a txvis object.')
   }
 
   if(seq.v.dat=="seq") {
-    txVis.ref<-data.frame(t(apply(reform_seq(txVis,nsequ), 1, function(x) {x[is.na(x)] <- "None";(x)})),stringsAsFactors = F)
+    txvis.ref<-data.frame(t(apply(reform_seq(txvis,nsequ), 1, function(x) {x[is.na(x)] <- "None";(x)})),stringsAsFactors = F)
   } else {
-    txVis.ref<-data.frame(t(apply(reform_dates(txVis,nsequ,start, end, interval, conflict), 1, function(x) {x[is.na(x)] <- "None";(x)})),stringsAsFactors = F)
+    txvis.ref<-data.frame(t(apply(reform_dates(txvis,nsequ,start, end, interval, conflict), 1, function(x) {x[is.na(x)] <- "None";(x)})),stringsAsFactors = F)
   }
   
-#  treats<-data.frame(t(apply(reform_seq(txVis,nseq), 1, function(x) {x[is.na(x)] <- "None";(x)})),stringsAsFactors = F)
+#  treats<-data.frame(t(apply(reform_seq(txvis,nseq), 1, function(x) {x[is.na(x)] <- "None";(x)})),stringsAsFactors = F)
 
-  seq.cols <- paste0( rep("seq_", (ncol(txVis.ref)-1)) , c(1:(ncol(txVis.ref)-1)) )
+  seq.cols <- paste0( rep("seq_", (ncol(txvis.ref)-1)) , c(1:(ncol(txvis.ref)-1)) )
   seq.fun  <- paste0(seq.cols, collapse = " + ")
 
-  input_agged_seq <- aggregate(data = txVis.ref, 
+  input_agged_seq <- aggregate(data = txvis.ref, 
                                as.formula(paste0("pt_id ~ ", seq.fun)) ,
                                FUN = length)     
   input_agged_seq<-input_agged_seq[do.call(order,input_agged_seq[,seq.cols]),]

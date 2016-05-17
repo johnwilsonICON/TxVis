@@ -6,6 +6,11 @@
 \usage{
 reform_nodes(x, y)
 }
+\arguments{
+\item{x}{A \code{txVis} object}
+
+\item{y}{A treatment sequence.}
+}
 \description{
 A helper function.
 }

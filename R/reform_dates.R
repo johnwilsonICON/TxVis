@@ -1,6 +1,6 @@
 #' Reformat dates from long to wide.
 #' 
-#' This is, broadly speaking a helper function, that turns the \code{txVis} object from a long
+#' This is, broadly speaking a helper function, that turns the \code{txvis} object from a long
 #' table to a wide table with rows for each patient
 #' and columns for regular intervals of dates from a defined \code{start} and \code{end} along
 #' a regular \code{interval}.  In cases where treatments overlap within a time bin there are 
@@ -11,16 +11,16 @@
 #' \code{last} in which coding priority is given to the treatment that occurs last chronologically within the interval
 #'
 #' @import lubridate
-#' @param x A \code{txVis} object
-#' @param start The starting period for the date matrix. Default is the earliest date in the \code{txVis} object.
-#' @param end The ending period for the date matrix. Default is the earliest date in the \code{txVis} object.
+#' @param x A \code{txvis} object
+#' @param start The starting period for the date matrix. Default is the earliest date in the \code{txvis} object.
+#' @param end The ending period for the date matrix. Default is the earliest date in the \code{txvis} object.
 #' @param interval The length of the interval in text format.  See Details.
 #' @param conflict Conflict resolution.
 #'
 #' 
 #' @examples
 #'
-#'  hlth_data <- create_txVis(patient   = treat$patient, 
+#'  hlth_data <- create_txvis(patient   = treat$patient, 
 #'                            treatment = treat$treatment,
 #'                            start     = treat$start,
 #'                            end       = treat$end,
@@ -33,8 +33,8 @@
 reform_dates <- function(x, nsequ=NULL, start = NULL, end = NULL, interval = "month", conflict = "majority"){
   
   # Basic check:
-  if (!"txVis" %in% class(x)) {
-    stop("You must pass a txVis object.")
+  if (!"txvis" %in% class(x)) {
+    stop("You must pass a txvis object.")
   }
   
   # The default will be to use the date range:

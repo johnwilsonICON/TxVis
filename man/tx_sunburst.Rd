@@ -4,7 +4,9 @@
 \alias{tx_sunburst}
 \title{Generate an sunburst plot for treatment data.}
 \usage{
-tx_sunburst(txVis, nsequ = NULL)
+tx_sunburst(txVis, nsequ = NULL, seq.v.dat = "seq", start = NULL,
+  end = NULL, interval = "month", conflict = "majority",
+  tx_colour = NULL)
 }
 \arguments{
 \item{txVis}{An object of class \code{txVis}.}

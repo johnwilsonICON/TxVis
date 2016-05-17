@@ -94,9 +94,11 @@ Here we see that the data is plotted out, with ten patients sampled randomly fro
 tx_indiv(hlth_data, nsample = 50, events = TRUE)
 ```
 
-Or we can align the plots so that they all appear to start at time 0, and provide some extra customization:
+Or we can align the plots so that they all appear to start at time 0, and provide some extra customization.  Note that to provide extra customization we need to load the `ggplot2` package.
 
 ```{r}
+
+library(ggplot2)
 
 tx_indiv(hlth_data, 
          nsample = 50, 
@@ -110,9 +112,36 @@ tx_indiv(hlth_data,
 
 ```
 
-With each method it is possible to visualize treatment outcomes, and emphasise particular aspects of the treatment sequencing.  For example, understanding transitions from one treatment to another can be understood using `tx_transmat`, a visualization for transition matrices.  The method examines treatment sequences rather than dates or date ranges.  The sequences of interest can be passed using the `sequences` parameter.  By default the first two sequences are examined, although any two 
+With each method it is possible to visualize treatment outcomes, and emphasise particular aspects of the treatment sequencing.  For example, understanding transitions from one treatment to another can be understood using `tx_transmat`, a visualization for transition matrices.  The method examines treatment sequences rather than dates or date ranges.  The sequences of interest can be passed using the `sequences` parameter.  By default the first two sequences are examined, although any two sequences may be chosen.
 
 
 ```{r}
-tx_transmat(hlth_data, sequences = c(2,4))
+
+tx_transmat(hlth_data, sequences = c(1,2))
+
+```
+
+Here we can easily see that the most frequent treatment shift is from Treatment *Tx1* to *Tx3*.  Treatments *Tx4 - 8* are infrequently administered in the early phase of the treatment sequence.  We could arrange multiple sequence comparisons together:
+
+```{r}
+
+# Show transition matrices for the first four sequences.
+par(mfrow = c(2,2))
+tx_transmat(hlth_data, sequences = c(1,2))
+tx_transmat(hlth_data, sequences = c(2,3))
+tx_transmat(hlth_data, sequences = c(3,4))
+```
+
+We can see now that the main sequence of treatments do vary, but that in general *Tx1-3* dominate the treatment regime.
+
+Recent work porting the `d3.js` JavaScript package to R has allowed us to leverage verious plotting devices that are HTML ready and interctive.  This includes sunburst plots:
+
+```{r}
+tx_sunburst(hlth_data)
+```
+
+and d3 style alluvial plots:
+
+```{r}
+tx_d3alluvial(hlth_data)
 ```
