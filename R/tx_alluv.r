@@ -40,7 +40,8 @@ tx_alluvial <- function(txVis,nsequ=NULL,seq.v.dat="seq",start = NULL, end = NUL
 
   # run alluvial plot
   if (is.null(tx_colour)) { 
-    alluvial::alluvial(input_agged_seq[,1:(ncol(txVis.ref)-1)], freq = input_agged_seq$freq,blocks=T,cw=0.05,col="#1f78b4",border="#1f78b4",cw=tx_cw)
+    alluvial::alluvial(input_agged_seq[,1:(ncol(txVis.ref)-1)], freq = input_agged_seq$freq,
+                       blocks=T, col="#1f78b4",border="#1f78b4",cw=tx_cw)
   } else { 
     alluvial::alluvial(input_agged_seq[,1:(ncol(txVis.ref)-1)], freq = input_agged_seq$freq,col=tx_colour,border=tx_colour,cw=tx_cw)
   }
