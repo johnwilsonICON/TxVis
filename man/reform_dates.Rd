@@ -4,8 +4,8 @@
 \alias{reform_dates}
 \title{Reformat dates from long to wide.}
 \usage{
-reform_dates(x, start = NULL, end = NULL, interval = "month",
-  conflict = "majority")
+reform_dates(x, nsequ = NULL, start = NULL, end = NULL,
+  interval = "month", conflict = "majority")
 }
 \arguments{
 \item{x}{A \code{txVis} object}

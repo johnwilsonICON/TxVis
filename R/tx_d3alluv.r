@@ -19,7 +19,9 @@ tx_d3alluvial <- function(txVis,nsequ=NULL,seq.v.dat="seq",start = NULL, end = N
   seq.cols <- paste0( rep("seq_", (ncol(txVis.ref)-1)) , c(1:(ncol(txVis.ref)-1)) )
   seq.fun  <- paste0(seq.cols, collapse = " + ")
   
-  networked_list <- lapply(1:3, reform_nodes, x = reform_seq(txVis,nsequ))
+  # reform_nodes turns the sequenceing into a network format of edges & nodes, by sequence.
+  #  Since the first column of the txVis object is the patient ID we drop it.
+  networked_list <- lapply(1:3, function(x)reform_nodes(x = reform_seq(txVis,nsequ), y = x + 1))
   
   edges <- do.call(rbind.data.frame, lapply(networked_list, function(x) x$edges))
   nodes <- do.call(rbind.data.frame, lapply(networked_list, function(x) x$nodes))
@@ -38,7 +40,7 @@ tx_d3alluvial <- function(txVis,nsequ=NULL,seq.v.dat="seq",start = NULL, end = N
                          target = match(edges$Target, nodes$ID) - 1,
                          value  = edges$Value)
   
-  networkD3::sankeyNetwork(Links = links_d3, 
+  sankeyNetwork(Links = links_d3, 
                            Nodes = nodes_d3, 
                            Source = "source",
                            Target = "target", 
