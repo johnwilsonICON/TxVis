@@ -1,6 +1,6 @@
-#' Create a txVis object from raw data.
+#' Create a txvis object from raw data.
 #'
-#' The \code{txVis} object contains encoding for patient, treatment and dates, and can have
+#' The \code{txvis} object contains encoding for patient, treatment and dates, and can have
 #' encoding for additional discrete events.  The class is used throughout the package.
 #' 
 #' @param patient Patient encoding for treatments.
@@ -15,13 +15,13 @@
 #' @param ev_format Date format for event dates, as a character string. See \code{as.Date}.
 #' 
 #' @author Ellen Korol \email{ellen.korol@@iconplc.com}
-#' @return This command returns an object of class \code{txVis}.
+#' @return This command returns an object of class \code{txvis}.
 #'
 #' @examples
 #'
 #'  # `treat` is bundled with the package.
 #'  
-#'  hlth_data <- create_txVis(patient        = treat$pat_id, 
+#'  hlth_data <- create_txvis(patient        = treat$pat_id, 
 #'                            treatment      = treat$treatment,
 #'                            start          = treat$start,
 #'                            end            = treat$end,
@@ -35,12 +35,12 @@
 #'
 #' 
 #' @references
-#' txVis Package: https://github.com/johnwilsonICON/TxVis
+#' txvis Package: https://github.com/johnwilsonICON/txvis
 #'
 #' @keywords utilities
 #' @export
 
-create_txVis <- function(patient, 
+create_txvis <- function(patient, 
                          treatment, 
                          start, 
                          end, 
@@ -87,7 +87,7 @@ create_txVis <- function(patient,
   # create class object
   output <- list(treats, events)
 
-  class(output) = c('txVis','list') 
+  class(output) = c('txvis','list') 
 
   return(output)
 
