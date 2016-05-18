@@ -1,17 +1,17 @@
 ---
-title: "TxVis, Visualizing Treatment Sequences"
+title: "txvis, Visualizing Treatment Sequences"
 author: "Ben Wilson, Ellen Korol, Sarah Goring, Simon Goring"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{TxVis, Visualizing Treatment Sequences}
+  %\VignetteIndexEntry{txvis, Visualizing Treatment Sequences}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 ---
 
-# TxVis - Data Visualization for Treament Patterns
+# `txvis` - Data Visualization for Treament Patterns
 
-The `TxVis` package for R is intended to provide users with the ability to generate high quality, customizable figures for both inital exploratory data analysis, and for presentation.  The package uses a `txVis` data object that is composed of both treatment sequence data and treatment related events.  The package provides `print` and `summary` methods for the `TxVis` object, and includes a number of options for plotting.
+The `txvis` package for R is intended to provide users with the ability to generate high quality, customizable figures for both inital exploratory data analysis, and for presentation.  The package uses a `txVis` data object that is composed of both treatment sequence data and treatment related events.  The package provides `print` and `summary` methods for the `txvis` object, and includes a number of options for plotting.
 
 ## Basic use
 
@@ -33,7 +33,7 @@ In the suplpied data a set of patients with unique encoding have up to 8 unique 
 head(events)
 ```
 
-For individual patients a number of `events` have also been encoded.  These events are associated with either point events, or events that occur over multiple days.  The `TxVis` package makes use of a number of other visualization packages, but internalizes the pre-processing.  To do this requires the use of a special `txVis` object.  We simplify the process of generating the object using the `create_txVis` function:
+For individual patients a number of `events` have also been encoded.  These events are associated with either point events, or events that occur over multiple days.  The `txvis` package makes use of a number of other visualization packages, but internalizes the pre-processing.  To do this requires the use of a special `txVis` object.  We simplify the process of generating the object using the `create_txVis` function:
 
 ```{r}
 
@@ -65,7 +65,9 @@ shows the head and tail of the treatment data, and provides a brief summary.
 The `summary` method:
 
 ```{r}
+
 summary(hlth_data)
+
 ```
 
 provides more extensive insight into the object data.  Ultimately the `txVis` object is a `list`, assigned the class `c('txVis', 'list')`.  Each of the `events` and `treat` objects are simply `data.frame`s, and as such can be manipulated with any of `R`'s tools for manipulating data.
@@ -145,3 +147,4 @@ and d3 style alluvial plots:
 ```{r}
 tx_d3alluvial(hlth_data)
 ```
+

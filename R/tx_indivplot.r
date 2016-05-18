@@ -1,8 +1,7 @@
-#' Generate an icicle plot for treatment data.
+#' Generate a plot showing the sequence of treatments for patients.
 #' 
 #' Using a \code{txvis} object, plot the sequencing of treatments using an icicle plot.
 #' 
-#' @import ggplot2
 #' @param txvis An object of class \code{txvis}.
 #' @param nsample The number of patients to show sequence data for.  Default is 10.
 #' @param aligned Should treatment sequences be displayed by date, or from a common origin.  Default is FALSE.
@@ -64,7 +63,7 @@ tx_indiv <- function(txvis,
   treats["dur"] <- as.numeric(treats$end_date - treats$start_date) + 1
   treats["days_from_index"] <- as.numeric(treats$start_date - treats$index_date)
 
-  tmp <- aggregate(days_from_index~pt_id, 
+  tmp <- aggregate(days_from_index ~ pt_id, 
                    data = treats, function(x) min(x))
 
   tx_long_all <- do.call(rbind, lapply(unique(treats$pt_id), 
@@ -94,8 +93,10 @@ tx_indiv <- function(txvis,
   #colors <- colorRampPalette(c("dark blue", "white"))(length(unique(tx_long_all$tx)))
   
   p <- ggplot2::ggplot(tx_long_all) + 
-    ggplot2::geom_tile(aes(x = dates, y = pt_id, fill = tx)) +
-    labs(fill="Treatment",x=if(aligned==T) {"Days from index date"} else {"Year"},y="Patient ID")
+    ggplot2::geom_tile(ggplot2::aes(x = dates, y = pt_id, fill = tx)) +
+    ggplot2::labs(fill = "Treatment",
+                  x = ifelse(aligned == TRUE, "Days from index date", "Year"),
+                  y = "Patient ID")
 
   if (!is.null(txvis[[2]]) & events == TRUE) {
     # We want to add points to the figure:
@@ -116,7 +117,7 @@ tx_indiv <- function(txvis,
     
     p <- p + 
       ggplot2::geom_point(data = evt,
-                          aes(x = ev_date, y = ev_pt_id, color = event))
+                          ggplot2::aes(x = ev_date, y = ev_pt_id, color = event))
     }
   
   return(p)
