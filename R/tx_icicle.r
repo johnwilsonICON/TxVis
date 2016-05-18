@@ -67,6 +67,7 @@ tx_icicle <- function(txvis,
                    panel.grid.minor = element_blank(),
                    panel.background = element_rect(fill = "white"), 
                    panel.border = element_rect(colour = "black", fill = NA, size = 2)) + 
+    ggplot2::scale_y_reverse() +
     ggplot2::scale_fill_manual(values = colors) +
     ggplot2::labs(fill = "Treatment",
                   x = "Percent",

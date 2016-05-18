@@ -94,7 +94,15 @@ tx_indiv <- function(txvis,
   
   p <- ggplot2::ggplot(tx_long_all) + 
     ggplot2::geom_tile(ggplot2::aes(x = dates, y = pt_id, fill = tx)) +
-    ggplot2::labs(fill = "Treatment",
+    ggplot2::theme_bw()+
+    ggplot2::theme(panel.grid.major=element_blank(),
+                   panel.grid.minor=element_blank(),
+                   panel.background=element_rect(fill="white"), 
+                   panel.border=element_rect(colour="black",fill=NA,size=1),
+                   legend.text=element_text(size=14),
+                   axis.title.y=element_text(size=14),
+                   axis.title.x=element_text(size=14)) + 
+        ggplot2::labs(fill = "Treatment",
                   x = ifelse(aligned == TRUE, "Days from index date", "Year"),
                   y = "Patient ID")
 
@@ -103,21 +111,27 @@ tx_indiv <- function(txvis,
     # If events is missing, even if the 
     
     evt <- txvis[[2]]
+    colnames(evt)[1]<-"pt_id"
+    evt<-evt[evt$pt_id %in% rand.pid,]
     evt$ev_date <- as.Date(evt$ev_date,format = "%d-%b-%y")
     
     if (aligned == TRUE) {
-      evt$ev_date <- evt$ev_date - min(txvis[[1]]$start_date)
+      evt <- merge(evt, aggregate(start_date~pt_id,
+                                  data = treats,
+                                  function(x) min(x)),
+                   by = "pt_id", all.x = TRUE)
+      colnames(evt)[5] <- c("index_date")
+      evt$ev_date <- evt$ev_date - evt$index_date
     }
     
-    evt$ev_pt_id <- as.character(evt$ev_pt_id)
+    evt$pt_id <- as.character(evt$pt_id)
     evt$event <- as.character(evt$event)
     
-    evt <- evt[evt$ev_pt_id %in% rand.pid,]
     un.evt <- unique(evt$event)
     
     p <- p + 
-      ggplot2::geom_point(data = evt,
-                          ggplot2::aes(x = ev_date, y = ev_pt_id, color = event))
+      ggplot2::geom_point(data = evt, size=50/nsamp,color = 1,
+                          ggplot2::aes(x = ev_date, y = pt_id, shape = event))
     }
   
   return(p)
