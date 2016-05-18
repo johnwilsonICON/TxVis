@@ -1,6 +1,6 @@
 #' @export
 
-library( "plyr" )
+#' @import plyr
 
 summary.txvis <- function(x) {
   # This function will summarize useful information in a txvis class object such as:
