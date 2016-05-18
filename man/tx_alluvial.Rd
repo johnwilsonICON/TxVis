@@ -4,16 +4,16 @@
 \alias{tx_alluvial}
 \title{Generate an alluvial plot for treatment data.}
 \usage{
-tx_alluvial(txVis, nsequ = NULL, seq.v.dat = "seq", start = NULL,
+tx_alluvial(txvis, nsequ = NULL, seq.v.dat = "seq", start = NULL,
   end = NULL, interval = "month", conflict = "majority",
   tx_colour = NULL, tx_cw = 0.05)
 }
 \arguments{
-\item{txVis}{An object of class \code{txVis}.}
+\item{txvis}{An object of class \code{txvis}.}
 
 \item{nsequ}{The maximum number of sequences to plot.}
 }
 \description{
-Using a txVis object, plot the sequencing of treatments using an alluvial plot.
+Using a txvis object, plot the sequencing of treatments using an alluvial plot.
 }
 
