@@ -2,7 +2,7 @@
 % Please edit documentation in R/tx_indivplot.r
 \name{tx_indiv}
 \alias{tx_indiv}
-\title{Generate an icicle plot for treatment data.}
+\title{Generate a plot showing the sequence of treatments for patients.}
 \usage{
 tx_indiv(txvis, nsample = NULL, aligned = FALSE, clustered = FALSE,
   events = FALSE)

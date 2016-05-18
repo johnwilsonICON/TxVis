@@ -9,6 +9,18 @@ tx_d3alluvial(txvis, nsequ = NULL, seq.v.dat = "seq", start = NULL,
 }
 \arguments{
 \item{txvis}{An object of class \code{txvis}.}
+
+\item{nsequ}{The number of sequences to be shown (default is 4)}
+
+\item{seq.v.dat}{Should the data be plotted by sequence order or by date?}
+
+\item{start}{If supplied the data will be truncated to all sequences after a start date.}
+
+\item{end}{If supplied the data will be truncated to all sequences before the end date.}
+
+\item{interval}{Length of time for intervening intervals for data plotted by date.}
+
+\item{conflict}{If two treatments fall within the same date interval, which should be displayed?}
 }
 \description{
 Using a \code{txvis} object, plot the sequencing of treatments using an alluvial plot.

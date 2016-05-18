@@ -10,14 +10,13 @@
 #' \code{first} in which coding priority is given to the treatment that occurs first chronologically within the interval
 #' \code{last} in which coding priority is given to the treatment that occurs last chronologically within the interval
 #'
-#' @import lubridate
 #' @param x A \code{txvis} object
 #' @param start The starting period for the date matrix. Default is the earliest date in the \code{txvis} object.
 #' @param end The ending period for the date matrix. Default is the earliest date in the \code{txvis} object.
 #' @param interval The length of the interval in text format.  See Details.
 #' @param conflict Conflict resolution.
 #'
-#' 
+#' @return A \code{data.frame}.
 #' @examples
 #'
 #'  hlth_data <- create_txvis(patient   = treat$patient, 
@@ -53,11 +52,13 @@ reform_dates <- function(x, nsequ=NULL, start = NULL, end = NULL, interval = "mo
   
   treat_out <- lapply(unique(x[[1]]$pt_id), function(pat){
   
-    x[[1]]$intervals <- interval(x[[1]]$start, x[[1]]$end)
+    x[[1]]$intervals <- lubridate::interval(x[[1]]$start, x[[1]]$end)
     short_patient <- x[[1]]$intervals[x[[1]]$pt_id %in% pat]
     short_tx <- as.character(x[[1]]$tx[x[[1]]$pt_id %in% pat])
     
-    treatments <- lapply(short_patient, function(y) { lubridate::int_overlaps(y, out_intervals) })
+    treatments <- lapply(short_patient, 
+                         function(y) { lubridate::int_overlaps(y, out_intervals) })
+    
     treatments <- do.call(rbind,
                           lapply(1:length(treatments), 
                                  function(y) { ifelse(treatments[[y]], short_tx[y], NA)}))
@@ -119,11 +120,14 @@ reform_dates <- function(x, nsequ=NULL, start = NULL, end = NULL, interval = "mo
   
   nseq <- ifelse(!is.null(nsequ), nsequ, ncol(filled)) #nseq will override start and end date specifications, to only return that number of intervals.
   
-  filled$pt_id<-rownames(filled)
-  colorder <- c("pt_id",colnames(filled[,1:(ncol(filled)-1)]))
-  filled<-filled[,colorder]
-  filled<-filled[,1:(nseq+1)]
-  colnames(filled)<- c("pt_id",paste("seq",rep(1:nseq),sep="_"))
+  filled$pt_id <- rownames(filled)
+  colorder <- c("pt_id", colnames(filled[, 1:(ncol(filled) - 1)]))
+  
+  filled <- filled[, colorder]
+  filled <- filled[, 1:(nseq + 1)]
+  
+  colnames(filled) <- c("pt_id", paste("seq", rep(1:nseq), sep = "_"))
+  
   return(filled)
 }
 

@@ -18,6 +18,9 @@ reform_dates(x, nsequ = NULL, start = NULL, end = NULL,
 
 \item{conflict}{Conflict resolution.}
 }
+\value{
+A \code{data.frame}.
+}
 \description{
 This is, broadly speaking a helper function, that turns the \code{txvis} object from a long
 table to a wide table with rows for each patient
