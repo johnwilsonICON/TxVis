@@ -4,10 +4,10 @@
 \alias{tx_transmat}
 \title{Generate a graphical transition matrix.}
 \usage{
-tx_transmat(txVis, sequences = c(1, 2), nseq = NULL, ...)
+tx_transmat(txvis, sequences = c(1, 2), nseq = NULL, ...)
 }
 \arguments{
-\item{txVis}{An object of class \code{txVis}.}
+\item{txvis}{An object of class \code{txvis}.}
 
 \item{sequences}{A vector of length two indicating the sequences for which the corrplot will be drawn.}
 
@@ -24,9 +24,9 @@ regime.  The method uses the \code{corrplot} package to
 }
 \examples{
 
-# Create the txVis object:
+# Create the txvis object:
 
-hlth_data <- create_txVis(patient   = treat$patient, 
+hlth_data <- create_txvis(patient   = treat$patient, 
                           treatment = treat$treatment,
                           start     = treat$start,
                           end       = treat$end,

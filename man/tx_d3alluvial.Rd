@@ -4,13 +4,13 @@
 \alias{tx_d3alluvial}
 \title{Generate an alluvial plot for treatment data using D3.js.}
 \usage{
-tx_d3alluvial(txVis, nsequ = NULL, seq.v.dat = "seq", start = NULL,
+tx_d3alluvial(txvis, nsequ = NULL, seq.v.dat = "seq", start = NULL,
   end = NULL, interval = "month", conflict = "majority")
 }
 \arguments{
-\item{txVis}{An object of class \code{txVis}.}
+\item{txvis}{An object of class \code{txvis}.}
 }
 \description{
-Using a \code{txVis} object, plot the sequencing of treatments using an alluvial plot.
+Using a \code{txvis} object, plot the sequencing of treatments using an alluvial plot.
 }
 

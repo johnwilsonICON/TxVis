@@ -4,11 +4,11 @@
 \alias{tx_indiv}
 \title{Generate an icicle plot for treatment data.}
 \usage{
-tx_indiv(txVis, nsample = NULL, aligned = FALSE, clustered = FALSE,
+tx_indiv(txvis, nsample = NULL, aligned = FALSE, clustered = FALSE,
   events = FALSE)
 }
 \arguments{
-\item{txVis}{An object of class \code{txVis}.}
+\item{txvis}{An object of class \code{txvis}.}
 
 \item{nsample}{The number of patients to show sequence data for.  Default is 10.}
 
@@ -22,11 +22,11 @@ tx_indiv(txVis, nsample = NULL, aligned = FALSE, clustered = FALSE,
 Returns a `ggplot2` object.
 }
 \description{
-Using a \code{txVis} object, plot the sequencing of treatments using an icicle plot.
+Using a \code{txvis} object, plot the sequencing of treatments using an icicle plot.
 }
 \examples{
 
- hlth_data <- create_txVis(patient        = treat$pat_id, 
+ hlth_data <- create_txvis(patient        = treat$pat_id, 
                            treatment      = treat$treatment,
                            start          = treat$start,
                            end            = treat$end,

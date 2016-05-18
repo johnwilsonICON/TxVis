@@ -4,14 +4,14 @@
 \alias{tx_icicle}
 \title{Generate an icicle plot for treatment data.}
 \usage{
-tx_icicle(txVis, nsequ = NULL, seq.v.dat = "seq", start = NULL,
+tx_icicle(txvis, nsequ = NULL, seq.v.dat = "seq", start = NULL,
   end = NULL, interval = "month", conflict = "majority",
   tx_colour = NULL)
 }
 \arguments{
-\item{txVis}{An object of class \code{txVis}.}
+\item{txvis}{An object of class \code{txvis}.}
 }
 \description{
-Using a \code{txVis} object, plot the sequencing of treatments using an icicle plot.
+Using a \code{txvis} object, plot the sequencing of treatments using an icicle plot.
 }
 

@@ -21,7 +21,7 @@ The plotting functions in `txVis` expect a `txVis` object, which is a `list` wit
 
 ```{r}
 
-library(TxVis)
+library(txvis)
 
 head(treat)
 
@@ -43,7 +43,7 @@ head(treat$start)
 
 # So we use the `create_txVis` flag `date_format` to ensure that the formatting is correct:
 
-hlth_data <- create_txVis(patient        = treat$pat_id, 
+hlth_data <- create_txvis(patient        = treat$pat_id, 
                           treatment      = treat$treatment,
                           start          = treat$start,
                           end            = treat$end,

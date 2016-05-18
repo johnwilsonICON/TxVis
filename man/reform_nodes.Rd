@@ -7,7 +7,7 @@
 reform_nodes(x, y)
 }
 \arguments{
-\item{x}{A \code{txVis} object}
+\item{x}{A \code{txvis} object}
 
 \item{y}{A treatment sequence.}
 }

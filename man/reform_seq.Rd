@@ -4,10 +4,10 @@
 \alias{reform_seq}
 \title{A helper function to turn a long table into a wide table.}
 \usage{
-reform_seq(txVis, nsequ = NULL)
+reform_seq(txvis, nsequ = NULL)
 }
 \arguments{
-\item{txVis}{A \code{txVis} object.}
+\item{txvis}{A \code{txvis} object.}
 
 \item{nsequ}{The maximum number of sequences to return.}
 }

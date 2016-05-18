@@ -8,18 +8,18 @@ reform_dates(x, nsequ = NULL, start = NULL, end = NULL,
   interval = "month", conflict = "majority")
 }
 \arguments{
-\item{x}{A \code{txVis} object}
+\item{x}{A \code{txvis} object}
 
-\item{start}{The starting period for the date matrix. Default is the earliest date in the \code{txVis} object.}
+\item{start}{The starting period for the date matrix. Default is the earliest date in the \code{txvis} object.}
 
-\item{end}{The ending period for the date matrix. Default is the earliest date in the \code{txVis} object.}
+\item{end}{The ending period for the date matrix. Default is the earliest date in the \code{txvis} object.}
 
 \item{interval}{The length of the interval in text format.  See Details.}
 
 \item{conflict}{Conflict resolution.}
 }
 \description{
-This is, broadly speaking a helper function, that turns the \code{txVis} object from a long
+This is, broadly speaking a helper function, that turns the \code{txvis} object from a long
 table to a wide table with rows for each patient
 and columns for regular intervals of dates from a defined \code{start} and \code{end} along
 a regular \code{interval}.  In cases where treatments overlap within a time bin there are 
@@ -32,7 +32,7 @@ three coded \code{conflict} resolution methods:
 }
 \examples{
 
- hlth_data <- create_txVis(patient   = treat$patient, 
+ hlth_data <- create_txvis(patient   = treat$patient, 
                            treatment = treat$treatment,
                            start     = treat$start,
                            end       = treat$end,
