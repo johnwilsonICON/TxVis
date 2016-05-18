@@ -3,7 +3,6 @@
 #' To show the rates at which one sequence passes to the next within a treatment
 #' regime.  The method uses the \code{corrplot} package to 
 #' 
-#' @importFrom corrplot corrplot
 #' @param txvis An object of class \code{txvis}.
 #' @param sequences A vector of length two indicating the sequences for which the corrplot will be drawn.
 #' @param nseq What is the maximum number of sequences
@@ -66,6 +65,6 @@ tx_transmat <- function(txvis, sequences = c(1,2), nseq = NULL, ...) {
   cp_data[is.na(cp_data)] <- 0
   
   corrplot::corrplot(cp_data, is.corr = FALSE, tl.col = 1, 
-                     method = "circle", outline = T, ...)
+           method = "circle", outline = T, ...)
 
 }
