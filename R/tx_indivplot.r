@@ -1,4 +1,4 @@
-#' Generate a plot showing the sequence of treatments for patients.
+#' Generate an icicle plot for treatment data.
 #' 
 #' Using a \code{txvis} object, plot the sequencing of treatments using an icicle plot.
 #' 
@@ -29,7 +29,7 @@
 #'  tx_indiv(hlth_data, events = TRUE)
 #'  
 #'  #  Add additional ggplot2 styline:
-#'  tx_indiv(hlth_data) + theme_bw()
+#'  tx_indiv(hlth_data) + ggplot2::theme_bw()
 #' 
 #' @export
 
@@ -63,7 +63,7 @@ tx_indiv <- function(txvis,
   treats["dur"] <- as.numeric(treats$end_date - treats$start_date) + 1
   treats["days_from_index"] <- as.numeric(treats$start_date - treats$index_date)
 
-  tmp <- aggregate(days_from_index ~ pt_id, 
+  tmp <- aggregate(days_from_index~pt_id, 
                    data = treats, function(x) min(x))
 
   tx_long_all <- do.call(rbind, lapply(unique(treats$pt_id), 
@@ -94,30 +94,48 @@ tx_indiv <- function(txvis,
   
   p <- ggplot2::ggplot(tx_long_all) + 
     ggplot2::geom_tile(ggplot2::aes(x = dates, y = pt_id, fill = tx)) +
-    ggplot2::labs(fill = "Treatment",
-                  x = ifelse(aligned == TRUE, "Days from index date", "Year"),
-                  y = "Patient ID")
+    ggplot2::theme_bw() +
+    ggplot2::theme(panel.grid.major = ggplot2::element_blank(),
+                   panel.grid.minor = ggplot2::element_blank(),
+                   panel.background = ggplot2::element_rect(fill = "white"), 
+                   panel.border     = ggplot2::element_rect(colour = "black",
+                                                            fill = NA,
+                                                            size = 1),
+                   legend.text  = ggplot2::element_text(size = 14),
+                   axis.title.y = ggplot2::element_text(size = 14),
+                   axis.title.x = ggplot2::element_text(size = 14)) + 
+    ggplot2::labs(fill = "Treatment", 
+         x = ifelse(aligned == TRUE, "Days from index date", "Year"),
+         y = "Patient ID")
 
   if (!is.null(txvis[[2]]) & events == TRUE) {
     # We want to add points to the figure:
     # If events is missing, even if the 
     
     evt <- txvis[[2]]
-    evt$ev_date <- as.Date(evt$ev_date,format = "%d-%b-%y")
+    colnames(evt)[1] <- "pt_id"
+    evt <- evt[evt$pt_id %in% rand.pid,]
     
     if (aligned == TRUE) {
-      evt$ev_date <- evt$ev_date - min(txvis[[1]]$start_date)
+      evt <- merge(evt, aggregate(start_date ~ pt_id,
+                                        data = treats,
+                                        function(x) min(x)),
+                      by = "pt_id", all.x = TRUE)
+      
+      colnames(evt)[5] <- c("index_date")
+      evt$ev_date <- evt$ev_date - evt$index_date
     }
     
-    evt$ev_pt_id <- as.character(evt$ev_pt_id)
+    evt$pt_id <- as.character(evt$pt_id)
     evt$event <- as.character(evt$event)
     
-    evt <- evt[evt$ev_pt_id %in% rand.pid,]
     un.evt <- unique(evt$event)
-    
+
     p <- p + 
-      ggplot2::geom_point(data = evt,
-                          ggplot2::aes(x = ev_date, y = ev_pt_id, color = event))
+      ggplot2::geom_point(data = evt, 
+                          size = 50 / nsamp, 
+                          color = 1, 
+                          ggplot2::aes(x = ev_date, y = pt_id, shape = event))
     }
   
   return(p)

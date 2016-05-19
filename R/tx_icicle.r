@@ -63,10 +63,11 @@ tx_icicle <- function(txvis,
   ggplot2::ggplot(plot_input, 
                   aes(x = 100 * x / max(x), y = variable, fill = value)) + 
     ggplot2::geom_tile() +
-    ggplot2::theme(panel.grid.major = element_blank(),
-                   panel.grid.minor = element_blank(),
-                   panel.background = element_rect(fill = "white"), 
-                   panel.border = element_rect(colour = "black", fill = NA, size = 2)) + 
+    ggplot2::theme(panel.grid.major = ggplot2::element_blank(),
+                   panel.grid.minor = ggplot2::element_blank(),
+                   panel.background = ggplot2::element_rect(fill = "white"), 
+                   panel.border     = ggplot2::element_rect(colour = "black", 
+                                                            fill = NA, size = 2)) + 
     ggplot2::scale_fill_manual(values = colors) +
     ggplot2::labs(fill = "Treatment",
                   x = "Percent",
