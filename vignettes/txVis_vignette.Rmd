@@ -119,13 +119,13 @@ tx_indiv(hlth_data, events = FALSE)
 
 Here we see that the data is plotted out, with ten patients sampled randomly from the set of patients.  We can sample more patients and add the set of events to the mapping:
 
-```{r}
+```{r, fig.width = 6}
 tx_indiv(hlth_data, nsample = 50, events = TRUE)
 ```
 
 Or we can align the plots so that they all appear to start at time 0, and provide some extra customization.  Note that to provide extra customization we need to load the `ggplot2` package.
 
-```{r}
+```{r, fig.width = 6}
 
 library(ggplot2)
 
