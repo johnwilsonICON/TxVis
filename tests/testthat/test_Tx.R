@@ -1,5 +1,5 @@
 library("testthat")
-library("TxVis")
+library("txvis")
 
 context('Stored data objects look the way we want them to.')
 test_that('Are treats and events right?',

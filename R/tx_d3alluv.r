@@ -68,7 +68,5 @@ tx_d3alluvial <- function(txvis,
                            Target = "target", 
                            Value = "value", 
                            NodeID = "name")
-  
-  NULL
 
 }

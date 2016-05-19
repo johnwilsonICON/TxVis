@@ -1,4 +1,4 @@
-#' Generate a plot showing the sequence of treatments for patients.
+#' Generate an icicle plot for treatment data.
 #' 
 #' Using a \code{txvis} object, plot the sequencing of treatments using an icicle plot.
 #' 
@@ -29,7 +29,7 @@
 #'  tx_indiv(hlth_data, events = TRUE)
 #'  
 #'  #  Add additional ggplot2 styline:
-#'  tx_indiv(hlth_data) + theme_bw()
+#'  tx_indiv(hlth_data) + ggplot2::theme_bw()
 #' 
 #' @export
 
@@ -63,7 +63,7 @@ tx_indiv <- function(txvis,
   treats["dur"] <- as.numeric(treats$end_date - treats$start_date) + 1
   treats["days_from_index"] <- as.numeric(treats$start_date - treats$index_date)
 
-  tmp <- aggregate(days_from_index ~ pt_id, 
+  tmp <- aggregate(days_from_index~pt_id, 
                    data = treats, function(x) min(x))
 
   tx_long_all <- do.call(rbind, lapply(unique(treats$pt_id), 
@@ -94,62 +94,64 @@ tx_indiv <- function(txvis,
   
   p <- ggplot2::ggplot(tx_long_all) + 
     ggplot2::geom_tile(ggplot2::aes(x = dates, y = pt_id, fill = tx)) +
-    ggplot2::theme_bw()+
-    ggplot2::theme(panel.grid.major=element_blank(),
-                   panel.grid.minor=element_blank(),
-                   panel.background=element_rect(fill="white"), 
-                   panel.border=element_rect(colour="black",fill=NA,size=1),
-                   legend.text=element_text(size=14),
-                   axis.title.y=element_text(size=14),
-                   axis.title.x=element_text(size=14)) + 
-        ggplot2::labs(fill = "Treatment",
-                  x = ifelse(aligned == TRUE, "Days from index date", "Year"),
-                  y = "Patient ID")
-
+    ggplot2::theme_bw() +
+    ggplot2::theme(panel.grid.major = ggplot2::element_blank(),
+                   panel.grid.minor = ggplot2::element_blank(),
+                   panel.background = ggplot2::element_rect(fill = "white"), 
+                   panel.border     = ggplot2::element_rect(colour = "black",
+                                                            fill = NA,
+                                                            size = 1),
+                   legend.text  = ggplot2::element_text(size = 14),
+                   axis.title.y = ggplot2::element_text(size = 14),
+                   axis.title.x = ggplot2::element_text(size = 14)) + 
+    ggplot2::labs(fill = "Treatment", 
+         x = ifelse(aligned == TRUE, "Days from index date", "Year"),
+         y = "Patient ID")
+    
   if (!is.null(txvis[[2]]) & events == TRUE) {
     # We want to add points to the figure:
     # If events is missing, even if the 
     
     evt <- txvis[[2]]
-    colnames(evt)[1]<-"pt_id"
-    evt<-evt[evt$pt_id %in% rand.pid,]
+
+    colnames(evt)[1] <- "pt_id"
+    evt <- evt[evt$pt_id %in% rand.pid,]
+    
     evt$ev_date <- as.Date(evt$ev_date,format = "%d-%b-%y")
     
     if (aligned == TRUE) {
-      evt <- merge(evt, aggregate(start_date~pt_id,
-                                  data = treats,
-                                  function(x) min(x)),
-                   by = "pt_id", all.x = TRUE)
+      evt <- merge(evt, aggregate(start_date ~ pt_id,
+                                        data = treats,
+                                        function(x) min(x)),
+                      by = "pt_id", all.x = TRUE)
+      
       colnames(evt)[5] <- c("index_date")
       evt$ev_date <- evt$ev_date - evt$index_date
       evt$ev_end_date <- evt$ev_end_date - evt$index_date
-      
-    } #end if aligned = T
+    }
+    
+    
+    evt1 <- evt[!is.na(evt$ev_end_date),c("pt_id","event","ev_date")]
+    evt2 <- evt[!is.na(evt$ev_end_date),c("pt_id","event","ev_end_date")]
+    colnames(evt2) <- colnames(evt1)
 
-    evt1<-evt[!is.na(evt$ev_end_date),c("pt_id","event","ev_date")]
-    evt2<-evt[!is.na(evt$ev_end_date),c("pt_id","event","ev_end_date")]
-    colnames(evt2)<-colnames(evt1)
-
-    evt.los<-rbind(evt1,evt2)
-    evt<-evt[is.na(evt$ev_end_date),c("pt_id","event","ev_date")]
-
+    evt.los <- rbind(evt1,evt2)
+    evt <- evt[is.na(evt$ev_end_date),c("pt_id", "event", "ev_date")]
     evt$pt_id <- as.character(evt$pt_id)
     evt$event <- as.character(evt$event)
     evt.los$pt_id <- as.character(evt.los$pt_id)
     evt.los$event <- as.character(evt.los$event)
     
     un.evt <- unique(evt$event)
-    
-      p <- p + 
-      ggplot2::geom_point(data = evt, size=50/nsamp,color = 1,
+
+    p <- p + 
+      ggplot2::geom_point(data = evt, 
+                          size = 50 / nsamp, 
+                          color = 1, 
                           ggplot2::aes(x = ev_date, y = pt_id, shape = event))
 
-      p <- p + 
-      ggplot2::geom_line(data = evt.los, color = 1,
-                          ggplot2::aes(x = ev_date, y = pt_id, linetype = event))
-
   } #end if events exist
-  
+
   return(p)
   
 }

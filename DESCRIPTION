@@ -22,5 +22,6 @@ Suggests: testthat,
     reshape2,
     devtools,
     alluvial,
-    sunburstR
+    sunburstR,
+    networkD3
 VignetteBuilder: knitr

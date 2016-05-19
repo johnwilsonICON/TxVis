@@ -2,7 +2,7 @@
 % Please edit documentation in R/tx_indivplot.r
 \name{tx_indiv}
 \alias{tx_indiv}
-\title{Generate a plot showing the sequence of treatments for patients.}
+\title{Generate an icicle plot for treatment data.}
 \usage{
 tx_indiv(txvis, nsample = NULL, aligned = FALSE, clustered = FALSE,
   events = FALSE)
@@ -43,7 +43,7 @@ Using a \code{txvis} object, plot the sequencing of treatments using an icicle p
  tx_indiv(hlth_data, events = TRUE)
  
  #  Add additional ggplot2 styline:
- tx_indiv(hlth_data) + theme_bw()
+ tx_indiv(hlth_data) + ggplot2::theme_bw()
 
 }
 

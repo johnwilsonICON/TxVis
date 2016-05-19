@@ -11,13 +11,36 @@ vignette: >
 
 # `txvis` - Data Visualization for Treament Patterns
 
-The `txvis` package for R is intended to provide users with the ability to generate high quality, customizable figures for both inital exploratory data analysis, and for presentation.  The package uses a `txVis` data object that is composed of both treatment sequence data and treatment related events.  The package provides `print` and `summary` methods for the `txvis` object, and includes a number of options for plotting.
+The `txvis` package for R is intended to provide users with the ability to generate high quality, customizable figures for both inital exploratory data analysis, and for presentation.  The package uses a `txvis` data object that is composed of both treatment sequence data and treatment related events.  The package provides `print` and `summary` methods for the `txvis` object, and includes a number of options for plotting.
 
 ## Basic use
 
-The package itself comes with a data object, `treat` that provides the opportunity to test the package.  `treat` is intended to be a sample of treatment data a client might provide, and does not reflect the required data format within the package.  Data is formatted by the function `create_txVis`.  
+### Installing the Package
 
-The plotting functions in `txVis` expect a `txVis` object, which is a `list` with two elements, a `treatment` and `event` object.  Each of these are optional, but most plotting cannot occur without treatment data.
+Many packages are now available from GitHub.  Currently `txvis` is not supported through the Comprehensive R Network (CRAN), and so the installation procedure is somewhat different than for other common packages.  To install `txvis` you must use the `devtools` package:
+
+```{r, eval=FALSE}
+library(devtools)
+
+devtools::install_github('johnwilsonICON/txvis')
+
+library(txvis)
+```
+
+### Loading Data
+
+The package itself comes with a data object, `treat` that provides the opportunity to test the package.  `treat` is intended to be a sample of treatment data a client might provide, and does not reflect the required data format within the package.  Data is formatted by the function `create_txvis`.
+
+Most treatment data includes:
+
+  * Patient IDs
+  * Treatment information
+  * Start dates
+  * End dates
+  
+This is the minimum information supported by the package.  The data model can be extended to include one or more treatment classes, hierarcies for the treatment types.  These are user defined, so, for example, the hierarchy may be: **warfarin** -> **anticoagulant**
+
+The plotting functions in `txvis` expect a `txvis` object. The `txvis` object is a `list` with two elements, a `treatment` and `event` object.  Each of these are optional, but most plotting cannot occur without treatment data.
 
 ```{r}
 
@@ -27,13 +50,13 @@ head(treat)
 
 ```
 
-In the suplpied data a set of patients with unique encoding have up to 8 unique treatments.  The `treat` dates are unencoded, but represent numeric data/time objects.
+In the supplied data, a set of patients with unique encoding have up to 8 unique treatments.  The `treat` dates are text string, but represent numeric data/time objects.  This data is meant to represent data that might be obtained from a clinical trial, which could require cleaning prior to analysis.
 
 ```{r}
 head(events)
 ```
 
-For individual patients a number of `events` have also been encoded.  These events are associated with either point events, or events that occur over multiple days.  The `txvis` package makes use of a number of other visualization packages, but internalizes the pre-processing.  To do this requires the use of a special `txVis` object.  We simplify the process of generating the object using the `create_txVis` function:
+For individual patients a number of `events` have also been encoded.  These events are associated with either point events, or events that occur over multiple days.  The `txvis` package makes use of a number of other visualization packages, but is intended to wrap the pre-processing.  To do this requires the use of a special `txvis` object.  We simplify the process of generating the object using the `create_txvis` function:
 
 ```{r}
 
@@ -41,7 +64,7 @@ For individual patients a number of `events` have also been encoded.  These even
 # Here the date encoding for the startand end date is slightly peculiar:
 head(treat$start)
 
-# So we use the `create_txVis` flag `date_format` to ensure that the formatting is correct:
+# So we use the `create_txvis` flag `date_format` to ensure that the formatting is correct:
 
 hlth_data <- create_txvis(patient        = treat$pat_id, 
                           treatment      = treat$treatment,
@@ -54,7 +77,9 @@ hlth_data <- create_txvis(patient        = treat$pat_id,
                           event_end_date = events$end)
 ```
 
-With the newly created object it becomes possible to plot one of the many options in the package.  The package also provides `print` and `summary` methods to easily provide an overivew of the data structure:
+The package was designed to accept multiple date formats since researchers encode & manage dates in multiple formats.  The encoding follows the formatting presented in [`strptime`](https://stat.ethz.ch/R-manual/R-devel/library/base/html/strptime.html) and as such can easily accomodate many standard and non-standard formats.
+
+With the newly created `txvis` object it becomes possible to plot one of the many options in the package. The package also provides `print` and `summary` methods to easily provide an overview of the data structure and contents:
 
 ```{r}
 print(hlth_data)
@@ -70,7 +95,7 @@ summary(hlth_data)
 
 ```
 
-provides more extensive insight into the object data.  Ultimately the `txVis` object is a `list`, assigned the class `c('txVis', 'list')`.  Each of the `events` and `treat` objects are simply `data.frame`s, and as such can be manipulated with any of `R`'s tools for manipulating data.
+provides more extensive insight into the object data and individual treatment sequences.  Ultimately the `txvis` object is a `list`, assigned the class `c('txvis', 'list')`.  Each of the `events` and `treat` objects are simply `data.frame`s, and as such can be manipulated with any of `R`'s tools for manipulating data.
 
 ## Creating an Alluvial plot:
 
@@ -87,18 +112,20 @@ tx_alluvial(hlth_data)
 It may be the case that we are interested in seeing how patient data squences change over time.  Using the `ggplot2` package, we can show treatment data over time using `tx_indiv`
 
 ```{r}
+
 tx_indiv(hlth_data, events = FALSE)
+
 ```
 
 Here we see that the data is plotted out, with ten patients sampled randomly from the set of patients.  We can sample more patients and add the set of events to the mapping:
 
-```{r}
+```{r, fig.width = 6}
 tx_indiv(hlth_data, nsample = 50, events = TRUE)
 ```
 
 Or we can align the plots so that they all appear to start at time 0, and provide some extra customization.  Note that to provide extra customization we need to load the `ggplot2` package.
 
-```{r}
+```{r, fig.width = 6}
 
 library(ggplot2)
 
