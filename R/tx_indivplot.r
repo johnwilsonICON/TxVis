@@ -122,17 +122,33 @@ tx_indiv <- function(txvis,
                    by = "pt_id", all.x = TRUE)
       colnames(evt)[5] <- c("index_date")
       evt$ev_date <- evt$ev_date - evt$index_date
-    }
-    
+      evt$ev_end_date <- evt$ev_end_date - evt$index_date
+      
+    } #end if aligned = T
+
+    evt1<-evt[!is.na(evt$ev_end_date),c("pt_id","event","ev_date")]
+    evt2<-evt[!is.na(evt$ev_end_date),c("pt_id","event","ev_end_date")]
+    colnames(evt2)<-colnames(evt1)
+
+    evt.los<-rbind(evt1,evt2)
+    evt<-evt[is.na(evt$ev_end_date),c("pt_id","event","ev_date")]
+
     evt$pt_id <- as.character(evt$pt_id)
     evt$event <- as.character(evt$event)
+    evt.los$pt_id <- as.character(evt.los$pt_id)
+    evt.los$event <- as.character(evt.los$event)
     
     un.evt <- unique(evt$event)
     
-    p <- p + 
+      p <- p + 
       ggplot2::geom_point(data = evt, size=50/nsamp,color = 1,
                           ggplot2::aes(x = ev_date, y = pt_id, shape = event))
-    }
+
+      p <- p + 
+      ggplot2::geom_line(data = evt.los, color = 1,
+                          ggplot2::aes(x = ev_date, y = pt_id, linetype = event))
+
+  } #end if events exist
   
   return(p)
   
