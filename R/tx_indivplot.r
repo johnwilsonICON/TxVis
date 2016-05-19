@@ -149,6 +149,9 @@ tx_indiv <- function(txvis,
                           size = 50 / nsamp, 
                           color = 1, 
                           ggplot2::aes(x = ev_date, y = pt_id, shape = event))
+    p <- p + 
+      ggplot2::geom_line(data = evt.los, color = 1,
+                          ggplot2::aes(x = ev_date, y = pt_id, linetype = event))
 
   } #end if events exist
 
