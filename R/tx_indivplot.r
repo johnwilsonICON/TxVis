@@ -107,14 +107,17 @@ tx_indiv <- function(txvis,
     ggplot2::labs(fill = "Treatment", 
          x = ifelse(aligned == TRUE, "Days from index date", "Year"),
          y = "Patient ID")
-
+    
   if (!is.null(txvis[[2]]) & events == TRUE) {
     # We want to add points to the figure:
     # If events is missing, even if the 
     
     evt <- txvis[[2]]
+
     colnames(evt)[1] <- "pt_id"
     evt <- evt[evt$pt_id %in% rand.pid,]
+    
+    evt$ev_date <- as.Date(evt$ev_date,format = "%d-%b-%y")
     
     if (aligned == TRUE) {
       evt <- merge(evt, aggregate(start_date ~ pt_id,
@@ -124,10 +127,20 @@ tx_indiv <- function(txvis,
       
       colnames(evt)[5] <- c("index_date")
       evt$ev_date <- evt$ev_date - evt$index_date
+      evt$ev_end_date <- evt$ev_end_date - evt$index_date
     }
     
+    
+    evt1 <- evt[!is.na(evt$ev_end_date),c("pt_id","event","ev_date")]
+    evt2 <- evt[!is.na(evt$ev_end_date),c("pt_id","event","ev_end_date")]
+    colnames(evt2) <- colnames(evt1)
+
+    evt.los <- rbind(evt1,evt2)
+    evt <- evt[is.na(evt$ev_end_date),c("pt_id", "event", "ev_date")]
     evt$pt_id <- as.character(evt$pt_id)
     evt$event <- as.character(evt$event)
+    evt.los$pt_id <- as.character(evt.los$pt_id)
+    evt.los$event <- as.character(evt.los$event)
     
     un.evt <- unique(evt$event)
 
@@ -136,8 +149,9 @@ tx_indiv <- function(txvis,
                           size = 50 / nsamp, 
                           color = 1, 
                           ggplot2::aes(x = ev_date, y = pt_id, shape = event))
-    }
-  
+
+  } #end if events exist
+
   return(p)
   
 }
