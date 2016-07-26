@@ -38,6 +38,10 @@ tx_d3alluvial <- function(txvis,
                           conflict = "majority",
                           link_coloring = "from") {
   
+  if (!"txvis" %in% class(txvis)) {
+    stop('You must pass a txvis object.')
+  }
+  
   if (!link_coloring %in% c("from", "to", "none")) {
     stop("The parameter 'link_coloring' must be one of 'from', 'to' or 'none'.")
   }
