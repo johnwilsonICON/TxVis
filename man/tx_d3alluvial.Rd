@@ -5,7 +5,8 @@
 \title{Generate an alluvial plot for treatment data using D3.js.}
 \usage{
 tx_d3alluvial(txvis, nsequ = NULL, seq.v.dat = "seq", start = NULL,
-  end = NULL, interval = "month", conflict = "majority")
+  end = NULL, interval = "month", conflict = "majority",
+  link_coloring = "from")
 }
 \arguments{
 \item{txvis}{An object of class \code{txvis}.}
@@ -21,8 +22,25 @@ tx_d3alluvial(txvis, nsequ = NULL, seq.v.dat = "seq", start = NULL,
 \item{interval}{Length of time for intervening intervals for data plotted by date.}
 
 \item{conflict}{If two treatments fall within the same date interval, which should be displayed?}
+
+\item{link_coloring}{Used to indicate the source of the link (path) coloring. \code{"from"} (default) colors based on the treatment source,  or \code{"to"} colors based on destination, or \code{"none"}.}
 }
 \description{
 Using a \code{txvis} object, plot the sequencing of treatments using an alluvial plot.
+}
+\examples{
+ hlth_data <- create_txvis(patient        = treat$pat_id, 
+                           treatment      = treat$treatment,
+                           start          = treat$start,
+                           end            = treat$end,
+                           date_format    = "\%d\%b\%Y",
+                           ev_patient     = events$pat_id,
+                           events         = events$event,
+                           event_date     = events$start,
+                           event_end_date = events$end)
+                           
+ # Basic plotting:                          
+ tx_d3alluvial(hlth_data)
+
 }
 
