@@ -6,7 +6,7 @@
 \usage{
 tx_icicle(txvis, nsequ = NULL, seq.v.dat = "seq", start = NULL,
   end = NULL, interval = "month", conflict = "majority",
-  tx_colour = NULL)
+  tx_color = NULL)
 }
 \arguments{
 \item{txvis}{An object of class \code{txvis}.}
@@ -49,7 +49,8 @@ Using a \code{txvis} object, plot the sequencing of treatments using an icicle p
  tx_indiv(hlth_data) + ggplot2::theme_bw()
  
  # Use a customized color palette:
- colors <- c("#FFFFFF", RColorBrewer::brewer.pal(length(levels(hlth_data[[1]]$tx)), 'Accent'))
- tx_icicle(hlth_data, tx_colour = colors)
+ library(RColorBrewer)
+ colors <- c("#FFFFFF", brewer.pal(length(levels(hlth_data[[1]]$tx)), 'Accent'))
+ tx_icicle(hlth_data, tx_color = colors)
 }
 

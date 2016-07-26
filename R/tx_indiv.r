@@ -64,7 +64,7 @@ tx_indiv <- function(txvis,
   treats <- txvis[[1]]
   treats <- treats[treats$pt_id %in% rand.pid,]
   
-  treats <- merge(treats, aggregate(start_date~pt_id,
+  treats <- merge(treats, stats::aggregate(start_date~pt_id,
                                     data = treats,
                                     function(x) min(x)),
                   by = "pt_id", all.x = TRUE)
@@ -75,8 +75,8 @@ tx_indiv <- function(txvis,
   treats["dur"] <- as.numeric(treats$end_date - treats$start_date) + 1
   treats["days_from_index"] <- as.numeric(treats$start_date - treats$index_date)
 
-  tmp <- aggregate(days_from_index~pt_id, 
-                   data = treats, function(x) min(x))
+  tmp <- stats::aggregate(days_from_index~pt_id, 
+                          data = treats, function(x) min(x))
 
   tx_long_all <- do.call(rbind, lapply(unique(treats$pt_id), 
                                         function(x) {
@@ -138,10 +138,10 @@ tx_indiv <- function(txvis,
     evt$ev_date <- as.Date(evt$ev_date, format = "%d-%b-%y")
     
     if (aligned == TRUE) {
-      evt <- merge(evt, aggregate(start_date ~ pt_id,
-                                        data = treats,
-                                        function(x) min(x)),
-                      by = "pt_id", all.x = TRUE)
+      evt <- merge(evt, stats::aggregate(start_date ~ pt_id,
+                                         data = treats,
+                                         function(x) min(x)),
+                   by = "pt_id", all.x = TRUE)
       
       colnames(evt)[5] <- c("index_date")
       evt$ev_date <- evt$ev_date - evt$index_date

@@ -14,11 +14,11 @@
 #' 
 #' # Create the txvis object:
 #' 
-#' hlth_data <- create_txvis(patient   = treat$patient, 
+#' hlth_data <- create_txvis(patient   = treat$pat_id, 
 #'                           treatment = treat$treatment,
 #'                           start     = treat$start,
 #'                           end       = treat$end,
-#'                           date_format = "%B %d, %Y")
+#'                           date_format = "%d%B%Y")
 #' 
 #' # A simple correlation plot:
 #' tx_transmat(hlth_data, sequences = c(1, 2))
@@ -50,14 +50,15 @@ tx_transmat <- function(txvis, sequences = c(1,2), nseq = NULL, ...) {
   # Coding decision: allow user-defined ordering of tx?  Currently alphabetical.
   tx_levels <- sort(unique(unlist(treat_seq[,-1])))
 
-  input_agged <- aggregate(data = treat_seq, 
-                           as.formula(paste0("pt_id ~ ", seq_fun)) ,
-                           FUN = length)
+  input_agged <- stats::aggregate(data = treat_seq, 
+                                  stats::as.formula(paste0("pt_id ~ ", seq_fun)) ,
+                                  FUN = length)
   
   input_agged$pt_id <- input_agged$pt_id / sum(input_agged$pt_id)
   
-  input_corr <- reshape2::dcast(input_agged, as.formula(paste0(seqs[1], '~', seqs[2])), 
-                      drop = FALSE, value.var = "pt_id")
+  input_corr <- reshape2::dcast(input_agged, 
+                                stats::as.formula(paste0(seqs[1], '~', seqs[2])), 
+                                drop = FALSE, value.var = "pt_id")
   
   rownames(input_corr) <- input_corr[,1]
 

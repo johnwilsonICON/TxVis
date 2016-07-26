@@ -26,11 +26,11 @@ regime.  The method uses the \code{corrplot} package to
 
 # Create the txvis object:
 
-hlth_data <- create_txvis(patient   = treat$patient, 
+hlth_data <- create_txvis(patient   = treat$pat_id, 
                           treatment = treat$treatment,
                           start     = treat$start,
                           end       = treat$end,
-                          date_format = "\%B \%d, \%Y")
+                          date_format = "\%d\%B\%Y")
 
 # A simple correlation plot:
 tx_transmat(hlth_data, sequences = c(1, 2))

@@ -28,18 +28,16 @@ This is, broadly speaking a helper function, that turns the \code{txvis} object 
 table to a wide table with rows for each patient
 and columns for regular intervals of dates from a defined \code{start} and \code{end} along
 a regular \code{interval}.  In cases where treatments overlap within a time bin there are 
-three coded \code{conflict} resolution methods:
+three coded \code{conflict} resolution methods: (1) \code{majority} in which coding priority 
+is given to the treatment that occupies the most time within the interval (2) \code{first} in 
+which coding priority is given to the treatment that occurs first chronologically within the interval (3) \code{last} in which coding priority is given to the treatment that occurs last chronologically within the interval
 }
 \details{
-\code{majority} in which coding priority is given to the treatment that occupies the most time within the interval
-\code{first} in which coding priority is given to the treatment that occurs first chronologically within the interval
-\code{last} in which coding priority is given to the treatment that occurs last chronologically within the interval
-
 The \code{interval} argument accepts a range of terms
 }
 \examples{
 
- hlth_data <- create_txvis(patient   = treat$patient, 
+ hlth_data <- create_txvis(patient   = treat$pat_id, 
                            treatment = treat$treatment,
                            start     = treat$start,
                            end       = treat$end,

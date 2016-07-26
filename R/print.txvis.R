@@ -10,9 +10,9 @@ print.txvis <- function(x, ...) {
   cat(paste0(length(unique(x[[1]]$tx)), ' unique treatment types.\n\n'))
   cat(paste0("Date range from ", min(x[[1]]$start_date)," to ", max(x[[1]]$start_date), '\n'))
 
-  print.data.frame(head(x[[1]]))
+  print.data.frame(utils::head(x[[1]]))
   cat('        . . .\n')
-  print.data.frame(tail(x[[1]]))
+  print.data.frame(utils::tail(x[[1]]))
 
   cat('        \n')  
     if (nrow(x[[2]]) == 0) {
@@ -22,8 +22,8 @@ print.txvis <- function(x, ...) {
     cat(paste0(length(unique(x[[2]]$ev_pt_id )), ' unique patients with events.\n'))
     cat(paste0(length(unique(levels(x[[2]]$event ))), ' types of events.\n\n'))
    
-  print.data.frame(head(x[[2]]))
+  print.data.frame(utils::head(x[[2]]))
   cat('        . . .\n')
-  print.data.frame(tail(x[[2]]))
+  print.data.frame(utils::tail(x[[2]]))
   }
 }

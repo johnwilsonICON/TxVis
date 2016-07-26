@@ -8,7 +8,7 @@ reform_nodes <- function(x, y){
 
   inp_table <- data.frame(ID = 1:nrow(x),
                           N1 = x[,y],
-                          N2 = x[,y+1],
+                          N2 = x[,y + 1],
                           stringsAsFactors = FALSE)
 
   unique_set <- list(N1 = unique(inp_table$N1),
@@ -19,11 +19,11 @@ reform_nodes <- function(x, y){
                       x      = rep(y:(y + 1), sapply(unique_set, length)),
                       labels = unlist(unique_set))
 
-  edges  <- aggregate(data = inp_table, ID ~ N1 + N2, FUN = length)
+  edges  <- stats::aggregate(data = inp_table, ID ~ N1 + N2, FUN = length)
 
   colnames(edges)[3] <- "Value"
   edges$N1 <- paste0(y, '_', edges$N1)
-  edges$N2 <- paste0(y+1, '_', edges$N2)
+  edges$N2 <- paste0(y + 1, '_', edges$N2)
 
   list(nodes = nodes, edges = edges)
 

@@ -31,8 +31,9 @@
 #'  tx_indiv(hlth_data) + ggplot2::theme_bw()
 #'  
 #'  # Use a customized color palette:
-#'  colors <- c("#FFFFFF", RColorBrewer::brewer.pal(length(levels(hlth_data[[1]]$tx)), 'Accent'))
-#'  tx_icicle(hlth_data, tx_colour = colors)
+#'  library(RColorBrewer)
+#'  colors <- c("#FFFFFF", brewer.pal(length(levels(hlth_data[[1]]$tx)), 'Accent'))
+#'  tx_icicle(hlth_data, tx_color = colors)
 #' @export
 
 tx_icicle <- function(txvis, 
@@ -42,7 +43,7 @@ tx_icicle <- function(txvis,
                       end = NULL, 
                       interval = "month", 
                       conflict = "majority", 
-                      tx_colour=NULL) {
+                      tx_color = NULL) {
   
   if (!"txvis" %in% class(txvis)) {
     stop('You must pass a txvis object.')
@@ -61,9 +62,9 @@ tx_icicle <- function(txvis,
   
   seq.fun  <- paste0(seq.cols, collapse = " + ")
 
-  input_agged_seq <- aggregate(data = txvis.ref, 
-                               as.formula(paste0("pt_id ~ ", seq.fun)) ,
-                               FUN = length)
+  input_agged_seq <- stats::aggregate(data = txvis.ref, 
+                                      stats::as.formula(paste0("pt_id ~ ", seq.fun)) ,
+                                      FUN = length)
   
   input_agged_seq <- input_agged_seq[do.call(order,input_agged_seq[,seq.cols]),]
   input_agged_seq <- input_agged_seq[rep(row.names(input_agged_seq), input_agged_seq$pt_id),]  #creates a row for each data point
@@ -76,10 +77,10 @@ tx_icicle <- function(txvis,
   plot_input[nchar(plot_input$variable) == 5,"variable"] <- paste0(substr(plot_input[nchar(plot_input$variable) == 5,"variable"],1,4),"0",substr(plot_input[nchar(plot_input$variable) == 5,"variable"],5,5))
   plot_input$variable <- as.numeric(substr(plot_input$variable,5,6))
   
-  if (is.null(tx_colour)) { 
-    colors <- colorRampPalette(c("dark blue", "white"))(length(unique(plot_input$value)))
+  if (is.null(tx_color)) { 
+    colors <- grDevices::colorRampPalette(c("dark blue", "white"))(length(unique(plot_input$value)))
   } else { 
-    colors <- tx_colour
+    colors <- tx_color
   }
 
   ggplot2::ggplot(plot_input, 
