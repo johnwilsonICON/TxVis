@@ -23,8 +23,6 @@ Many packages are now available from GitHub.  Currently `txvis` is not supported
 library(devtools)
 
 devtools::install_github('johnwilsonICON/txvis')
-
-library(txvis)
 ```
 
 ### Loading Data
@@ -75,6 +73,7 @@ hlth_data <- create_txvis(patient        = treat$pat_id,
                           events         = events$event,
                           event_date     = events$start,
                           event_end_date = events$end)
+
 ```
 
 The package was designed to accept multiple date formats since researchers encode & manage dates in multiple formats.  The encoding follows the formatting presented in [`strptime`](https://stat.ethz.ch/R-manual/R-devel/library/base/html/strptime.html) and as such can easily accomodate many standard and non-standard formats.
@@ -101,7 +100,7 @@ provides more extensive insight into the object data and individual treatment se
 
 The alluvial plot wraps the `alluvial` function from the `alluvial` package, which is available from [GitHub](https://github.com/mbojan/alluvial).  The first time the function is run it will prompt you to download the package if you haven't already.
 
-```{r, fig.show='hold'}
+```{r, fig.show='hold', message = FALSE, warnings = FALSE}
 # Given that data has already been loaded into `hlth_data`
 
 tx_alluvial(hlth_data)
@@ -165,7 +164,7 @@ We can see now that the main sequence of treatments do vary, but that in general
 
 Recent work porting the `d3.js` JavaScript package to R has allowed us to leverage verious plotting devices that are HTML ready and interctive.  This includes sunburst plots:
 
-```{r}
+```{r, message = FALSE, warnings = FALSE}
 tx_sunburst(hlth_data)
 ```
 

@@ -19,7 +19,7 @@ tx_indiv(txvis, nsample = NULL, aligned = FALSE, clustered = FALSE,
 \item{events}{Should individual events be superimposed onto the treatment sequences. Defaults to FALSE.}
 }
 \value{
-Returns a `ggplot2` object.
+Returns a \code{ggplot2} object.
 }
 \description{
 Using a \code{txvis} object, plot the sequencing of treatments using an icicle plot.
@@ -30,7 +30,7 @@ Using a \code{txvis} object, plot the sequencing of treatments using an icicle p
                            treatment      = treat$treatment,
                            start          = treat$start,
                            end            = treat$end,
-                           date_format    = "\%B \%d, \%Y",
+                           date_format    = "\%d\%b\%Y",
                            ev_patient     = events$pat_id,
                            events         = events$event,
                            event_date     = events$start,
@@ -43,7 +43,14 @@ Using a \code{txvis} object, plot the sequencing of treatments using an icicle p
  tx_indiv(hlth_data, events = TRUE)
  
  #  Add additional ggplot2 styline:
- tx_indiv(hlth_data) + ggplot2::theme_bw()
+ library(ggplot2)
+ 
+ tx_indiv(hlth_data) + theme_bw()
+ 
+ # Show many more samples & events, and assign a common start date.
+ tx_indiv(hlth_data, nsample = 50, aligned = TRUE) +
+   theme(axis.text.y = element_text(size = 8))
+ 
 
 }
 

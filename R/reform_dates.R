@@ -11,10 +11,13 @@
 #' \code{last} in which coding priority is given to the treatment that occurs last chronologically within the interval
 #'
 #' @param x A \code{txvis} object
+#' @param nsequ The number of drug treatment sequences to use (default is \code{NULL})
 #' @param start The starting period for the date matrix. Default is the earliest date in the \code{txvis} object.
 #' @param end The ending period for the date matrix. Default is the earliest date in the \code{txvis} object.
 #' @param interval The length of the interval in text format.  See Details.
 #' @param conflict Conflict resolution.
+#' 
+#' @details The \code{interval} argument accepts a range of terms
 #'
 #' @return A \code{data.frame}.
 #' @examples
@@ -23,13 +26,18 @@
 #'                            treatment = treat$treatment,
 #'                            start     = treat$start,
 #'                            end       = treat$end,
-#'                            date_format = "%B %d, %Y")
+#'                            date_format = "%d%B%Y")
 #'                            
 #'  wide <- reform_dates(hlth_data)
 #' 
 #' @export
 
-reform_dates <- function(x, nsequ=NULL, start = NULL, end = NULL, interval = "month", conflict = "majority"){
+reform_dates <- function(x, 
+                         nsequ=NULL, 
+                         start = NULL, 
+                         end = NULL, 
+                         interval = "month", 
+                         conflict = "majority"){
   
   # Basic check:
   if (!"txvis" %in% class(x)) {
@@ -118,7 +126,9 @@ reform_dates <- function(x, nsequ=NULL, start = NULL, end = NULL, interval = "mo
   rownames(filled) <- unique(x[[1]]$pt_id)
   colnames(filled) <- out_dates[-length(out_dates)]
   
-  nseq <- ifelse(!is.null(nsequ), nsequ, ncol(filled)) #nseq will override start and end date specifications, to only return that number of intervals.
+  # `nsequ` will override start and end date specifications, to only return that 
+  # number of intervals.
+  nseq <- ifelse(!is.null(nsequ), nsequ, ncol(filled)) 
   
   filled$pt_id <- rownames(filled)
   colorder <- c("pt_id", colnames(filled[, 1:(ncol(filled) - 1)]))
@@ -130,15 +140,3 @@ reform_dates <- function(x, nsequ=NULL, start = NULL, end = NULL, interval = "mo
   
   return(filled)
 }
-
-######
-#date-related cuts
-
-#then apply time cuts, currently hard-coding 30 day brackets
-#CODING DECISION: align all starting dates, so that time is from index date, rather than a set calendar date.
-#Could be user input
-#treats<-merge(treats,aggregate(start_date~pt_id,data=treats,function(x) min(x)),by="pt_id", all.x=T)
-#colnames(treats)[c(3,6)]<-c("start_date","index_date")
-#treats["date_brk"]<- cut(as.numeric(treats$start_date - treats$index_date)+.001,breaks=seq(from=0,to=30*10,by=30))
-#treats["dur"]<-as.numeric(treats$end_date - treats$start_date)
-#treats["days_from_index"]<-as.numeric(treats$start_date - treats$index_date)

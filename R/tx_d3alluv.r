@@ -56,7 +56,10 @@ tx_d3alluvial <- function(txvis,
   
   colnames(edges) <- c('Source', 'Target', 'Value')
   
-  nodes_d3 <- data.frame(name   = substr(nodes$ID, 3, 1000))
+  nodes_d3 <- data.frame(name   = substr(nodes$ID, 3, 1000),
+                         stringsAsFactors = FALSE)
+  
+  nodes_d3[which(nodes_d3[,1] == "NA"),1] <- ""
   
   links_d3 <- data.frame(source = match(edges$Source, nodes$ID) - 1,
                          target = match(edges$Target, nodes$ID) - 1,

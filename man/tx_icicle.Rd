@@ -23,9 +23,33 @@ tx_icicle(txvis, nsequ = NULL, seq.v.dat = "seq", start = NULL,
 
 \item{conflict}{If two treatments fall within the same date interval, which should be displayed?}
 
-\item{tx_color}{A \code{colorRampPalette} to color the sequnces.}
+\item{tx_color}{A \code{colorRampPalette} to color the sequnces.  Note that the first element of the color vector always codes to "None".}
+}
+\value{
+A \code{ggplot2} object.
 }
 \description{
 Using a \code{txvis} object, plot the sequencing of treatments using an icicle plot.
+}
+\examples{
+ hlth_data <- create_txvis(patient        = treat$pat_id, 
+                           treatment      = treat$treatment,
+                           start          = treat$start,
+                           end            = treat$end,
+                           date_format    = "\%d\%b\%Y",
+                           ev_patient     = events$pat_id,
+                           events         = events$event,
+                           event_date     = events$start,
+                           event_end_date = events$end)
+                           
+ # Basic plotting:                          
+ tx_icicle(hlth_data)
+ 
+ #  Add additional ggplot2 styline:
+ tx_indiv(hlth_data) + ggplot2::theme_bw()
+ 
+ # Use a customized color palette:
+ colors <- c("#FFFFFF", RColorBrewer::brewer.pal(length(levels(hlth_data[[1]]$tx)), 'Accent'))
+ tx_icicle(hlth_data, tx_colour = colors)
 }
 

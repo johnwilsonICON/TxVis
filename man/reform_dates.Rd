@@ -10,6 +10,8 @@ reform_dates(x, nsequ = NULL, start = NULL, end = NULL,
 \arguments{
 \item{x}{A \code{txvis} object}
 
+\item{nsequ}{The number of drug treatment sequences to use (default is \code{NULL})}
+
 \item{start}{The starting period for the date matrix. Default is the earliest date in the \code{txvis} object.}
 
 \item{end}{The ending period for the date matrix. Default is the earliest date in the \code{txvis} object.}
@@ -32,6 +34,8 @@ three coded \code{conflict} resolution methods:
 \code{majority} in which coding priority is given to the treatment that occupies the most time within the interval
 \code{first} in which coding priority is given to the treatment that occurs first chronologically within the interval
 \code{last} in which coding priority is given to the treatment that occurs last chronologically within the interval
+
+The \code{interval} argument accepts a range of terms
 }
 \examples{
 
@@ -39,7 +43,7 @@ three coded \code{conflict} resolution methods:
                            treatment = treat$treatment,
                            start     = treat$start,
                            end       = treat$end,
-                           date_format = "\%B \%d, \%Y")
+                           date_format = "\%d\%B\%Y")
                            
  wide <- reform_dates(hlth_data)
 

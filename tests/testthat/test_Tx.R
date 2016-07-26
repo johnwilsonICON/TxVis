@@ -16,6 +16,8 @@ test_that('Are treats and events right?',
          expect_is(events$end, "character")
          expect_is(treat$end, "character")
          expect_is(treat$start, "character")
+         expect_true(!is.na(format(treat$start[1], format = "%d%b%Y")))
+         expect_true(!is.na(format(events$start[1], format = "%d%b%Y")))
        })
 
 context('Is the class creation working:')
@@ -23,4 +25,6 @@ test_that('What makes it, what breaks it:',
           {
             
           })
+
+
 

@@ -1,6 +1,6 @@
 #' Generate an icicle plot for treatment data.
 #' 
-#' Using a \code{txvis} object, plot the sequencing of treatments using an icicle plot.
+#' @description Using a \code{txvis} object, plot the sequencing of treatments using an icicle plot.
 #' 
 #' @param txvis An object of class \code{txvis}.
 #' @param nsample The number of patients to show sequence data for.  Default is 10.
@@ -8,7 +8,7 @@
 #' @param clustered Organize treatments so that similar treatments are adjacent to one another.  Not implemented.
 #' @param events Should individual events be superimposed onto the treatment sequences. Defaults to FALSE.
 #' 
-#' @return Returns a `ggplot2` object.
+#' @return Returns a \code{ggplot2} object.
 #' 
 #' @examples
 #'
@@ -16,7 +16,7 @@
 #'                            treatment      = treat$treatment,
 #'                            start          = treat$start,
 #'                            end            = treat$end,
-#'                            date_format    = "%B %d, %Y",
+#'                            date_format    = "%d%b%Y",
 #'                            ev_patient     = events$pat_id,
 #'                            events         = events$event,
 #'                            event_date     = events$start,
@@ -29,7 +29,14 @@
 #'  tx_indiv(hlth_data, events = TRUE)
 #'  
 #'  #  Add additional ggplot2 styline:
-#'  tx_indiv(hlth_data) + ggplot2::theme_bw()
+#'  library(ggplot2)
+#'  
+#'  tx_indiv(hlth_data) + theme_bw()
+#'  
+#'  # Show many more samples & events, and assign a common start date.
+#'  tx_indiv(hlth_data, nsample = 50, aligned = TRUE) +
+#'    theme(axis.text.y = element_text(size = 8))
+#'  
 #' 
 #' @export
 
@@ -38,6 +45,11 @@ tx_indiv <- function(txvis,
                      aligned = FALSE,
                      clustered = FALSE,
                      events = FALSE) {
+  
+  if (!"txvis" %in% class(txvis)) {
+    # Make sure we know what data type we're dealing with.
+    stop('You must pass a txvis object.')
+  }
   
   nsamp <- ifelse(!is.null(nsample), 
                   nsample, 
@@ -95,6 +107,7 @@ tx_indiv <- function(txvis,
   p <- ggplot2::ggplot(tx_long_all) + 
     ggplot2::geom_tile(ggplot2::aes(x = dates, y = pt_id, fill = tx)) +
     ggplot2::theme_bw() +
+    ggplot2::scale_x_date(expand=c(0,0)) +
     ggplot2::theme(panel.grid.major = ggplot2::element_blank(),
                    panel.grid.minor = ggplot2::element_blank(),
                    panel.background = ggplot2::element_rect(fill = "white"), 
@@ -117,7 +130,7 @@ tx_indiv <- function(txvis,
     colnames(evt)[1] <- "pt_id"
     evt <- evt[evt$pt_id %in% rand.pid,]
     
-    evt$ev_date <- as.Date(evt$ev_date,format = "%d-%b-%y")
+    evt$ev_date <- as.Date(evt$ev_date, format = "%d-%b-%y")
     
     if (aligned == TRUE) {
       evt <- merge(evt, aggregate(start_date ~ pt_id,

@@ -4,16 +4,45 @@
 \alias{tx_alluvial}
 \title{Generate an alluvial plot for treatment data.}
 \usage{
-tx_alluvial(txvis, nsequ = NULL, seq.v.dat = "seq", start = NULL,
-  end = NULL, interval = "month", conflict = "majority",
-  tx_colour = NULL, tx_cw = 0.05)
+tx_alluvial(txvis, nsequ = NULL, sequence = TRUE, start = NULL,
+  end = NULL, interval = "4 months", conflict = "majority",
+  tx_cw = 0.05, ...)
 }
 \arguments{
 \item{txvis}{An object of class \code{txvis}.}
 
 \item{nsequ}{The maximum number of sequences to plot.}
+
+\item{sequence}{Boolean.  Should treatments plot by sequence (\code{TRUE}) or by date.}
+
+\item{start}{Arguments to pass to \code{reform_dates} or \code{reform_seq}.}
+
+\item{end}{Arguments to pass to \code{reform_dates} or \code{reform_seq}.}
+
+\item{interval}{Arguments to pass to \code{reform_dates} or \code{reform_seq}.  Default is 4 months.}
+
+\item{conflict}{Arguments to pass to \code{reform_dates} or \code{reform_seq}.}
+
+\item{tx_cw}{Width of the category axis.}
+
+\item{...}{Arguments to pass to the \code{alluvial} function.}
 }
 \description{
 Using a txvis object, plot the sequencing of treatments using an alluvial plot.
+}
+\examples{
+
+ hlth_data <- create_txvis(patient        = treat$pat_id, 
+                           treatment      = treat$treatment,
+                           start          = treat$start,
+                           end            = treat$end,
+                           date_format    = "\%d\%b\%Y",
+                           ev_patient     = events$pat_id,
+                           events         = events$event,
+                           event_date     = events$start,
+                           event_end_date = events$end)
+                           
+ tx_alluvial(hlth_data)
+ 
 }
 

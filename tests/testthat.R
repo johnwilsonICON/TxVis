@@ -1,4 +1,4 @@
 library(testthat)
-library(TxVis)
+library(txvis)
 
-test_check("TxVis")
+test_check("txvis")
