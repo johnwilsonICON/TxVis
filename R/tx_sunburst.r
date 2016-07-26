@@ -16,6 +16,10 @@ tx_sunburst <- function(txvis, nsequ=NULL, seq.v.dat="seq",
                         start = NULL, end = NULL, interval = "month", 
                         conflict = "majority", tx_color = NULL) {
   
+  if (!"txvis" %in% class(txvis)) {
+    stop('You must pass a txvis object.')
+  }
+  
   if (!requireNamespace("sunburstR", quietly = TRUE)) {
     message("This function requires the non-CRAN package `sunburstR` installed from GitHub.")
     user_inp <-  readline(prompt = "Do you want to install this package? (y/n)")

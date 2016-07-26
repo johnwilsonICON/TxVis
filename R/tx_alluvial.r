@@ -41,6 +41,10 @@ tx_alluvial <- function(txvis,
                         tx_cw = 0.05,
                         ...) {
   
+  if (!"txvis" %in% class(txvis)) {
+    stop('You must pass a txvis object.')
+  }
+  
   if (!requireNamespace("alluvial", quietly = TRUE)) {
     message("This function requires the non-CRAN package `alluvial` installed from GitHub.")
     user_inp <-  readline(prompt = "Do you want to install this package? (y/n)")
