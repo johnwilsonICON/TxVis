@@ -41,14 +41,16 @@ tx_alluvial <- function(txvis,
                         tx_cw = 0.05,
                         ...) {
   
-  if (!require("alluvial",character.only = TRUE)) {
+  if (!requireNamespace("alluvial", quietly = TRUE)) {
     message("This function requires the non-CRAN package `alluvial` installed from GitHub.")
     user_inp <-  readline(prompt = "Do you want to install this package? (y/n)")
     if (user_inp == "y") {
       devtools::install_github("mbojan/alluvial")
-      library(alluvial)
+      requireNamespace(alluvial)
     } else {
-      stop("You must install `alluvial` for this function to work.")
+      stop(paste0("You must install the package `alluvial` for this function to work.\n",
+                  " You can install the package directly from GitHub using:\n\n",
+                  "> library(devtools)\n> devtools::install_github('mbojan/alluvial')"))
     }
   }
 

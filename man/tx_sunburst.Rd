@@ -6,10 +6,24 @@
 \usage{
 tx_sunburst(txvis, nsequ = NULL, seq.v.dat = "seq", start = NULL,
   end = NULL, interval = "month", conflict = "majority",
-  tx_colour = NULL)
+  tx_color = NULL)
 }
 \arguments{
 \item{txvis}{An object of class \code{txvis}.}
+
+\item{nsequ}{What is the maximum number of sequences}
+
+\item{seq.v.dat}{Should the data be plotted by sequence order or by date?}
+
+\item{start}{If supplied the data will be truncated to all sequences after a start date.}
+
+\item{end}{If supplied the data will be truncated to all sequences before the end date.}
+
+\item{interval}{Length of time for intervening intervals for data plotted by date.}
+
+\item{conflict}{If two treatments fall within the same date interval, which should be displayed?}
+
+\item{tx_color}{A \code{colorRampPalette} to color the sequnces.  Note that the first element of the color vector always codes to "None".}
 }
 \description{
 Using a \code{txvis} object, plot the sequencing of treatments using a sunburst plot.
