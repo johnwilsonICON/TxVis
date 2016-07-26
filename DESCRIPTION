@@ -23,5 +23,6 @@ Suggests: testthat,
     devtools,
     alluvial,
     sunburstR,
-    networkD3
+    networkD3,
+    RColorBrewer
 VignetteBuilder: knitr

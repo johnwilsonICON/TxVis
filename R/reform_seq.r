@@ -11,7 +11,7 @@ reform_seq <- function(txvis, nsequ=NULL) {
   nseq <- ifelse(!is.null(nsequ), nsequ, 4)  #defaults to 4 if not entered by user
   
   treats <- within(txvis[[1]], {
-    seq <- as.numeric(ave(pt_id, list(pt_id), FUN = seq_along))
+    seq <- as.numeric(stats::ave(pt_id, list(pt_id), FUN = seq_along))
     })
   
   treats    <- treats[treats$seq <= nseq,]  

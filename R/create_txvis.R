@@ -12,7 +12,7 @@
 #' @param events Any point event in the treatment of each individual.
 #' @param event_date The date of event, formatted as \code{date_format}.
 #' @param event_end_date The date that event finished, formatted as \code{date_format}.
-#' @param ev_format Date format for event dates, as a character string. See \code{as.Date}.
+#' @param ev_date_format Date format for event dates, as a character string. See \code{as.Date}.
 #' 
 #' @author Ellen Korol \email{ellen.korol@@iconplc.com}
 #' @return This command returns an object of class \code{txvis}.

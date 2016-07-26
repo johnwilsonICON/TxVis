@@ -27,7 +27,7 @@ create_txvis(patient, treatment, start, end, date_format, ev_patient = NULL,
 
 \item{event_end_date}{The date that event finished, formatted as \code{date_format}.}
 
-\item{ev_format}{Date format for event dates, as a character string. See \code{as.Date}.}
+\item{ev_date_format}{Date format for event dates, as a character string. See \code{as.Date}.}
 }
 \value{
 This command returns an object of class \code{txvis}.

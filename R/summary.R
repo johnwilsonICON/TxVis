@@ -26,7 +26,8 @@ summary.txvis <- function(object, ...) {
                            length)
   
   treats.summary[2, ] <- round(by(y$V1, y$tx, mean),2)
-  treats.summary[3, ] <- round(by((object[[1]]$end_date - object[[1]]$start_date), object[[1]]$tx, mean),2)
+  treats.summary[3, ] <- round(by((object[[1]]$end_date - object[[1]]$start_date), 
+                                  object[[1]]$tx, mean),2)
   treats.summary[4, ] <- by((object[[1]]$end_date - object[[1]]$start_date), object[[1]]$tx, min)
   treats.summary[5, ] <- by((object[[1]]$end_date - object[[1]]$start_date), object[[1]]$tx, max)
 
