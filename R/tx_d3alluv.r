@@ -66,7 +66,7 @@ tx_d3alluvial <- function(txvis,
   
   # reform_nodes turns the sequenceing into a network format of edges & nodes, by sequence.
   #  Since the first column of the txvis object is the patient ID we drop it.
-  networked_list <- lapply(1:3, function(x){
+  networked_list <- lapply(1:(nsequ-1), function(x){
     reform_nodes(x = reform_seq(txvis,nsequ), y = x + 1)})
   
   edges <- do.call(rbind.data.frame, lapply(networked_list, function(x) x$edges))
